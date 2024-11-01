@@ -1,4 +1,4 @@
-package java.com.ssafy.enjoytrip;
+package com.ssafy.enjoytrip;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
