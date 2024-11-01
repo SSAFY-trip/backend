@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ssafy.enjoytrip.domain.Member;
-import com.ssafy.enjoytrip.repository.MemberRepository;
+import com.ssafy.enjoytrip.repository.MemberMapper;
 import com.ssafy.enjoytrip.service.MemberServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class MemberServiceTest {
     private MemberServiceImpl memberService;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberMapper memberRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

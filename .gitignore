@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# resources 파일 생략
+/src/main/resources
+application.yml
