@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.domain;
 import lombok.Getter;
 
 @Getter
-public class Member {
+public class User {
     private Long id;
     private String username;
     private String password;

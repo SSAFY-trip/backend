@@ -1,14 +1,14 @@
 package com.ssafy.enjoytrip.controller;
 
-import com.ssafy.enjoytrip.domain.Member;
-import com.ssafy.enjoytrip.service.MemberService;
+import com.ssafy.enjoytrip.domain.User;
+import com.ssafy.enjoytrip.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberController {
-    private final MemberService memberService;
+public class UserController {
+    private final UserService userService;
 
     /**
      * http://localhost:8080/api/signup
@@ -18,8 +18,8 @@ public class MemberController {
      * }
      */
     @PostMapping("/api/signup")
-    public boolean addMember(@RequestBody Member member) {
-        memberService.signUp(member);
+    public boolean addMember(@RequestBody User user) {
+        userService.signUp(user);
         return true;
     }
 
@@ -29,6 +29,6 @@ public class MemberController {
      */
     @PostMapping("/api/signin")
     public boolean signIn(@RequestParam String username, @RequestParam String password) {
-        return memberService.signIn(username, password);
+        return userService.signIn(username, password);
     }
 }

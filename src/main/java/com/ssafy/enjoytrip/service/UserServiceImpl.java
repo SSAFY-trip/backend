@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.service;
 
-import com.ssafy.enjoytrip.domain.Member;
-import com.ssafy.enjoytrip.repository.MemberMapper;
+import com.ssafy.enjoytrip.domain.User;
+import com.ssafy.enjoytrip.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,24 +9,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class UserServiceImpl implements UserService {
 
-    private final MemberMapper memberMapper;
+    private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     @Transactional
-    public void signUp(Member member) {
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-        member.addPassword(encodedPassword);
-        memberMapper.save(member);
+    public void signUp(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.addPassword(encodedPassword);
+        userMapper.save(user);
     }
 
     @Override
     public boolean signIn(String username, String rawPassword) {
-        Member member = memberMapper.findByUsername(username);
+        User user = userMapper.findByUsername(username);
 
-        if (member != null && passwordEncoder.matches(rawPassword, member.getPassword())) {
+        if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
             return true;
         }
         return false;
