@@ -1,42 +1,54 @@
 package com.ssafy.enjoytrip.controller;
 
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.service.TripService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.ssafy.enjoytrip.service.TripService;
+import com.ssafy.enjoytrip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.dto.TripUpdateDto;
 
 @RestController
 @RequestMapping("/trips")
+@Validated
+@RequiredArgsConstructor
 public class TripController {
-
-    @Autowired
-    private TripService tripService;
+    private final TripService tripService;
 
     @PostMapping
-    public void createTrip(@RequestBody Trip trip) {
-        tripService.createTrip(trip);
+    public ResponseEntity<Void> createTrip(@RequestBody @Valid TripCreateDto tripDto) {
+        tripService.createTrip(tripDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
-    public Trip getTripById(@PathVariable Integer id) {
-        return tripService.getTripById(id);
+    public ResponseEntity<TripResponseDto> getTripById(@PathVariable Integer id) {
+        TripResponseDto tripDto = tripService.getTripById(id);
+        return ResponseEntity.ok(tripDto);
     }
 
     @GetMapping
-    public List<Trip> getAllTrips() {
-        return tripService.getAllTrips();
+    public ResponseEntity<List<TripResponseDto>> getAllTrips() {
+        List<TripResponseDto> trips = tripService.getAllTrips();
+        return ResponseEntity.ok(trips);
     }
 
     @PutMapping("/{id}")
-    public void updateTrip(@PathVariable Integer id, @RequestBody Trip trip) {
-        trip.setId(id);
-        tripService.updateTrip(trip);
+    public ResponseEntity<Void> updateTrip(@PathVariable Integer id, @RequestBody @Valid TripUpdateDto tripDto) {
+        tripService.updateTrip(id, tripDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTrip(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTrip(@PathVariable Integer id) {
         tripService.deleteTrip(id);
+        return ResponseEntity.noContent().build();
     }
 }

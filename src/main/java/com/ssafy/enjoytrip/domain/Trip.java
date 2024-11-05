@@ -1,70 +1,41 @@
 package com.ssafy.enjoytrip.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
+@ToString
+@Builder
+@Getter
 public class Trip {
     private Integer id;
+
+    @NotBlank
+    @Size(max = 15)
     private String name;
-    private Date startDate;
-    private Date endDate;
+
+    @NotNull
+    private LocalDate startDate;
+
+    @NotNull
+    private LocalDate endDate;
+
+    @Size(max = 100)
     private String tripOverview;
+
+    @Size(max = 50)
     private String imgUrl;
+
     private Boolean isPublic;
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getTripOverview() {
-        return tripOverview;
-    }
-
-    public void setTripOverview(String tripOverview) {
-        this.tripOverview = tripOverview;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public Boolean getIsPublic() {
-        return isPublic;
-    }
-
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic;
+    @AssertTrue(message = "Start date must be before end date.")
+    public boolean isDateRangeValid() {
+        return startDate != null && endDate != null && startDate.isBefore(endDate);
     }
 }

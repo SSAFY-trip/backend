@@ -1,0 +1,58 @@
+package com.ssafy.enjoytrip.dto;
+
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import lombok.Builder;
+import lombok.Getter;
+
+import com.ssafy.enjoytrip.domain.Trip;
+
+@Builder
+@Getter
+public class TripUpdateDto {
+    private Integer id;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 15, message = "Name must be at most 15 characters")
+    private String name;
+
+    @NotNull(message = "Start date is required")
+    private LocalDate startDate;
+
+    @NotNull(message = "End date is required")
+    private LocalDate endDate;
+
+    @Size(max = 100, message = "Trip overview must be at most 100 characters")
+    private String tripOverview;
+
+    @Size(max = 50, message = "Image URL must be at most 50 characters")
+    private String imgUrl;
+
+    private Boolean isPublic;
+
+    @AssertTrue(message = "Start date must be before end date.")
+    public boolean isDateRangeValid() {
+        return startDate != null && endDate != null && startDate.isBefore(endDate);
+    }
+
+    public void setUpdateId(Integer id) {
+        this.id = id;
+    }
+
+    public Trip toEntity() {
+        return Trip.builder()
+                .id(id)
+                .name(name)
+                .startDate(startDate)
+                .endDate(endDate)
+                .tripOverview(tripOverview)
+                .imgUrl(imgUrl)
+                .isPublic(isPublic)
+                .build();
+    }
+}
