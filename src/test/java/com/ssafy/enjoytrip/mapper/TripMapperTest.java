@@ -1,28 +1,25 @@
 package com.ssafy.enjoytrip.mapper;
 
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.ssafy.enjoytrip.domain.Trip;
+import com.ssafy.enjoytrip.repository.TripMapper;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@Sql(scripts = "/schema.sql")
-@Transactional
+@ActiveProfiles("test")
 class TripMapperTest {
     @Autowired
     private TripMapper tripMapper;
@@ -30,60 +27,91 @@ class TripMapperTest {
     private Trip trip;
 
     @BeforeEach
-    void setUp() throws Exception {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        trip = new Trip();
-        trip.setName("Trip to Paris");
-        trip.setStartDate(dateFormat.parse("2023-01-01"));
-        trip.setEndDate(dateFormat.parse("2023-01-10"));
-        trip.setTripOverview("A wonderful trip to Paris.");
-        trip.setImgUrl("http://example.com/image.jpg");
-        trip.setIsPublic(true);
+    void setUp() {
+        trip = Trip.builder()
+                .name("Paris")
+                .startDate(LocalDate.of(2023, 1, 1))
+                .endDate(LocalDate.of(2023, 1, 10))
+                .tripOverview("A wonderful trip to Paris.")
+                .imgUrl("http://example.com/image.jpg")
+                .isPublic(true)
+                .build();
     }
 
     @AfterEach
     void tearDown() {
-        trip = null;
+        tripMapper.deleteAllTrips();
+        tripMapper.resetAutoIncrement();
     }
 
     @Test
-    void insertTrip() {
+    @DisplayName("Test insert trip & auto-incremented id")
+    void testInsertTrip() {
+        tripMapper.insertTrip(trip);
+
+        // test trip insertion
+        Trip fetchedTrip = tripMapper.getTripById(trip.getId());
+        assertNotNull(fetchedTrip, "Fetched trip should not be null");
+        assertNotNull(fetchedTrip.getId(), "Trip ID should be generated");
+        assertEquals(trip.getName(), fetchedTrip.getName(), "Trip name should match");
+
+        // test auto-increment id
+        tripMapper.insertTrip(trip);
+        fetchedTrip = tripMapper.getTripById(trip.getId());
+        assertEquals(fetchedTrip.getId(), trip.getId(), "Trip ID should be auto-incremented");
+    }
+
+    @Test
+    @DisplayName("Test get trip by id")
+    void testGetTripById() {
         tripMapper.insertTrip(trip);
         Trip fetchedTrip = tripMapper.getTripById(trip.getId());
-        assertNotNull(fetchedTrip);
-        assertEquals("Trip to Paris", fetchedTrip.getName());
+        assertNotNull(fetchedTrip, "Fetched trip should not be null");
+        assertEquals(trip.getName(), fetchedTrip.getName(), "Trip name should match");
     }
 
     @Test
-    void getTripById() {
+    @DisplayName("Test get all trip list")
+    void testGetAllTrips() {
         tripMapper.insertTrip(trip);
-        Trip fetchedTrip = tripMapper.getTripById(trip.getId());
-        assertNotNull(fetchedTrip);
-        assertEquals(trip.getName(), fetchedTrip.getName());
-    }
-
-    @Test
-    void getAllTrips() {
+        tripMapper.insertTrip(trip);
         tripMapper.insertTrip(trip);
         List<Trip> trips = tripMapper.getAllTrips();
-        assertFalse(trips.isEmpty());
-        assertEquals(1, trips.size());
+        assertFalse(trips.isEmpty(), "Trip list should not be empty");
+        assertEquals(3, trips.size(), "Trip list size should be 3");
     }
 
     @Test
-    void updateTrip() {
+    @DisplayName("Test update trip")
+    void testUpdateTrip() {
         tripMapper.insertTrip(trip);
-        trip.setName("Updated Trip to Paris");
-        tripMapper.updateTrip(trip);
-        Trip updatedTrip = tripMapper.getTripById(trip.getId());
-        assertEquals("Updated Trip to Paris", updatedTrip.getName());
+
+        Trip updatedTrip = Trip.builder()
+                .id(trip.getId())
+                .name("Updated Trip")
+                .startDate(trip.getStartDate())
+                .endDate(trip.getEndDate())
+                .tripOverview(trip.getTripOverview())
+                .imgUrl(trip.getImgUrl())
+                .isPublic(false)
+                .build();
+
+        int rowsAffected = tripMapper.updateTrip(updatedTrip);
+        assertEquals(1, rowsAffected, "One row should be affected on update");
+
+        Trip fetchedTrip = tripMapper.getTripById(trip.getId());
+        assertEquals("Updated Trip", fetchedTrip.getName(), "Trip name should be updated");
+        assertFalse(fetchedTrip.getIsPublic(), "Public status should be false after update");
     }
 
     @Test
-    void deleteTrip() {
+    @DisplayName("Test delete trip by id")
+    void testDeleteTrip() {
         tripMapper.insertTrip(trip);
-        tripMapper.deleteTrip(trip.getId());
+        int rowsAffected = tripMapper.deleteTrip(trip.getId());
+        assertEquals(1, rowsAffected, "One row should be affected on delete");
+
         Trip deletedTrip = tripMapper.getTripById(trip.getId());
-        assertNull(deletedTrip);
+        assertNull(deletedTrip, "Deleted trip should be null");
     }
 }
