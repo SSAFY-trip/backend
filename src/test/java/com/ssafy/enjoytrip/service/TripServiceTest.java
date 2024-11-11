@@ -27,7 +27,7 @@ class TripServiceTest {
     private TripMapper tripMapper;
 
     @InjectMocks
-    private TripService tripService;
+    private TripServiceImpl tripService;
 
     @Test
     @DisplayName("Create Trip - call insertTrip()")

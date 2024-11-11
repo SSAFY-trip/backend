@@ -6,12 +6,14 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,9 +24,9 @@ import com.ssafy.enjoytrip.domain.Trip;
 import com.ssafy.enjoytrip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.exception.GlobalExceptionHandler;
 import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
 import com.ssafy.enjoytrip.repository.TripMapper;
-import com.ssafy.enjoytrip.repository.UserMapper;
 import com.ssafy.enjoytrip.service.TripService;
 
 import static org.mockito.Mockito.*;
@@ -36,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @WebMvcTest(TripController.class)
 @WithMockUser
+@ContextConfiguration(classes = { TripController.class, GlobalExceptionHandler.class })
 class TripControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -44,11 +47,8 @@ class TripControllerTest {
     @MockBean
     private TripService tripService;
 
-    @MockBean
+    @Mock
     private TripMapper tripMapper;
-
-    @MockBean
-    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -210,7 +210,7 @@ class TripControllerTest {
                 .build();
 
         // When
-        mockMvc.perform(put("/trips/1")
+        mockMvc.perform(patch("/trips/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
@@ -235,7 +235,7 @@ class TripControllerTest {
         tripUpdateDto.setUpdateId(1);
 
         // When
-        mockMvc.perform(put("/trips/1")
+        mockMvc.perform(patch("/trips/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
@@ -266,7 +266,7 @@ class TripControllerTest {
                 .when(tripService).updateTrip(eq(nonExistingId), refEq(tripUpdateDto));
 
         // When
-        mockMvc.perform(put("/trips/" + nonExistingId)
+        mockMvc.perform(patch("/trips/" + nonExistingId)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
