@@ -21,7 +21,6 @@ dependencies {
 	// Core Spring Boot dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// MyBatis and JDBC dependencies
@@ -37,6 +36,13 @@ dependencies {
 	// Hibernate Validator dependencies (Jakarta Validation)
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 	implementation 'org.glassfish:javax.el:3.0.0'
+
+	// spring security dependencies
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	// Testing dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

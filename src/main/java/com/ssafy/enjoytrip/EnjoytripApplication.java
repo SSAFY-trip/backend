@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.ssafy.enjoytrip.repository")
+@MapperScan({"com.ssafy.enjoytrip.repository","com.ssafy.enjoytrip.login.repository"})
 public class EnjoytripApplication {
 
 	public static void main(String[] args) {

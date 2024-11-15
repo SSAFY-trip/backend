@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.controller;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import com.ssafy.enjoytrip.login.repository.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,6 @@ import com.ssafy.enjoytrip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.dto.TripUpdateDto;
 import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
 import com.ssafy.enjoytrip.repository.TripMapper;
-import com.ssafy.enjoytrip.repository.UserMapper;
 import com.ssafy.enjoytrip.service.TripService;
 
 import static org.mockito.Mockito.*;
