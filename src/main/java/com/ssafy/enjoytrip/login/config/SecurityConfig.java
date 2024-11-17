@@ -35,7 +35,6 @@ public class SecurityConfig {
     private final OAuth2UserDetailsService OAuth2UserDetailsService;
     private final OAuth2SuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
-    private final UserMapper userRepository;
     private final RefreshMapper refreshRepository;
     private final UtilFunction utilFunction;
     @Bean
@@ -54,7 +53,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
