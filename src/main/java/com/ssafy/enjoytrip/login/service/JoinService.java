@@ -14,9 +14,11 @@ public class JoinService {
     public boolean joinProcess(JoinDTO joinDTO){
         String username = joinDTO.getUsername();
         String password = joinDTO.getPassword();
+        String name = joinDTO.getName();
+        boolean isUserNameExist = userMapper.existsByUsername(username);
+        boolean isNameExist = userMapper.existsByName(name);
 
-        boolean isExist = userMapper.existsByUsername(username);
-        if(isExist) return false;
+        if(isUserNameExist || isNameExist) return false;
         if (joinDTO.getRole() == null || !Role.isValidRole(joinDTO.getRole().name())) {
             return false;
         }
@@ -24,6 +26,7 @@ public class JoinService {
                 .username(username)
                 .password(password)
                 .role(joinDTO.getRole())
+                .name(name)
                 .build();
         userMapper.save(user);
 

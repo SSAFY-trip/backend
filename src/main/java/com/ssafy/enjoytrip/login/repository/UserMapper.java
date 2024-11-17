@@ -24,4 +24,7 @@ public interface UserMapper {
     @Select("SELECT COUNT(*) > 0 FROM user WHERE username = #{username}")
     boolean existsByUsername(@Param("username") String username);
 
+    @Select("SELECT COUNT(*) > 0 FROM user WHERE name = #{name}")
+    boolean existsByName(@Param("name") String name);
+
 }

@@ -29,7 +29,7 @@ public class User {
         private String username;
         private String password;
         private Role role;
-
+        private String name;
         public LocalUserBuilder username(String username) {
             this.username = username;
             return this;
@@ -39,13 +39,16 @@ public class User {
             this.password = encodePassword(password);
             return this;
         }
-
+        public LocalUserBuilder name(String name){
+            this.name=name;
+            return this;
+        }
         public LocalUserBuilder role(Role role) {
             this.role = role;
             return this;
         }
         public User build() {
-            return new User(username, password, generateRandomEmail(), null, AuthProvider.LOCAL,  role);
+            return new User(username, password, generateRandomEmail(), name, AuthProvider.LOCAL,  role);
         }
     }
 
@@ -55,7 +58,6 @@ public class User {
         private String name;
         private AuthProvider provider;
         private Role role;
-
         public OAuthUserBuilder username(String username) {
             this.username = username;
             return this;
