@@ -20,8 +20,8 @@ public class UtilFunction {
 
         return cookie;
     }
-    public void addRefreshEntity(String username, String refresh, Long expiredMs) {
-        Timestamp expiration = new Timestamp(System.currentTimeMillis() + expiredMs);
+    public void addRefreshEntity(String username, String refresh) {
+        Timestamp expiration = new Timestamp(System.currentTimeMillis() + 86400000L);
 
         Refresh refreshEntity = new Refresh();
         refreshEntity.setUsername(username);

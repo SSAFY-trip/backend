@@ -55,7 +55,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String access = jwtUtil.createJwt("access", username, role, 600000L);
         String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
-        utilFunction.addRefreshEntity(username, refresh,86400000L);
+        utilFunction.addRefreshEntity(username, refresh);
 
         response.setHeader("access", access);
         response.addCookie(utilFunction.createCookie("refresh", refresh));
