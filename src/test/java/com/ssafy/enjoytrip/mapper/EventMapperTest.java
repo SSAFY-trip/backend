@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.ssafy.enjoytrip.domain.Event;
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.repository.EventMapper;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.event.domain.Event;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.event.mapper.EventMapper;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -4,21 +4,22 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.exception.DataMismatchException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.enjoytrip.domain.Event;
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.dto.EventCreateDto;
-import com.ssafy.enjoytrip.dto.EventResponseDto;
-import com.ssafy.enjoytrip.dto.EventUpdateMemoDto;
-import com.ssafy.enjoytrip.dto.EventUpdateOrderDto;
-import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.repository.EventMapper;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.event.dto.*;
+import com.ssafy.enjoytrip.event.domain.Event;
+import com.ssafy.enjoytrip.event.mapper.EventMapper;
+import com.ssafy.enjoytrip.global.exception.exception.DataMismatchException;
+import com.ssafy.enjoytrip.global.exception.exception.ExternalServiceException;
+import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.openfeign.KakaoClient;
+import com.ssafy.enjoytrip.openfeign.TMapClient;
+import com.ssafy.enjoytrip.openfeign.dto.TMapRouteOptimizationRequestDto;
+import com.ssafy.enjoytrip.openfeign.dto.TMapRouteOptimizationResponseDto;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 @Service
 @RequiredArgsConstructor

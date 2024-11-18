@@ -2,15 +2,14 @@ package com.ssafy.enjoytrip.trip.dto;
 
 import java.time.LocalDate;
 
+import lombok.Builder;
+import lombok.Getter;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import lombok.Builder;
-import lombok.Getter;
-
-import com.ssafy.enjoytrip.domain.Trip;
+import com.ssafy.enjoytrip.trip.domain.Trip;
 
 @Builder
 @Getter

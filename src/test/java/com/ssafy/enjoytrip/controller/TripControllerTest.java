@@ -19,15 +19,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.dto.TripUpdateDto;
-import com.ssafy.enjoytrip.exception.GlobalExceptionHandler;
-import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.repository.TripMapper;
-import com.ssafy.enjoytrip.service.TripService;
+import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
+import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.trip.controller.TripController;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
+import com.ssafy.enjoytrip.trip.service.TripService;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

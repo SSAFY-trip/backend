@@ -2,9 +2,9 @@ package com.ssafy.enjoytrip.trip.service;
 
 import java.util.List;
 
-import com.ssafy.enjoytrip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
 
 public interface TripService {
     void createTrip(TripCreateDto tripDto);

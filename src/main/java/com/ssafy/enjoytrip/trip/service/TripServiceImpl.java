@@ -3,15 +3,15 @@ package com.ssafy.enjoytrip.trip.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.dto.TripUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 @Service
 public class TripServiceImpl implements TripService {

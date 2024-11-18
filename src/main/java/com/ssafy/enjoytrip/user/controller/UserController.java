@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.user.controller;
 
-import com.ssafy.enjoytrip.domain.User;
-import com.ssafy.enjoytrip.service.UserService;
+import com.ssafy.enjoytrip.user.domain.User;
+import com.ssafy.enjoytrip.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

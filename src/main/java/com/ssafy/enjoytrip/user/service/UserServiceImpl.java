@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.domain.User;
-import com.ssafy.enjoytrip.repository.UserMapper;
+import com.ssafy.enjoytrip.user.domain.User;
+import com.ssafy.enjoytrip.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

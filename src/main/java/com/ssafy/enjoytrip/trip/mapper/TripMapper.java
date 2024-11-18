@@ -1,9 +1,10 @@
 package com.ssafy.enjoytrip.trip.mapper;
 
-import com.ssafy.enjoytrip.domain.Trip;
+import java.util.List;
+
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
+import com.ssafy.enjoytrip.trip.domain.Trip;
 
 @Mapper
 public interface TripMapper {

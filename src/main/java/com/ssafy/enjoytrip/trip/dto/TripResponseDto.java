@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import lombok.Getter;
 
-import com.ssafy.enjoytrip.domain.Trip;
+import com.ssafy.enjoytrip.trip.domain.Trip;
 
 @Getter
 public class TripResponseDto {

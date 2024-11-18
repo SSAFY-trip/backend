@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.exception.DataMismatchException;
+import com.ssafy.enjoytrip.event.service.EventServiceImpl;
+import com.ssafy.enjoytrip.global.exception.exception.DataMismatchException;
+import com.ssafy.enjoytrip.openfeign.TMapClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +15,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ssafy.enjoytrip.domain.Event;
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.dto.EventCreateDto;
-import com.ssafy.enjoytrip.dto.EventResponseDto;
-import com.ssafy.enjoytrip.dto.EventUpdateMemoDto;
-import com.ssafy.enjoytrip.dto.EventUpdateOrderDto;
-import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.repository.EventMapper;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.event.domain.Event;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.event.dto.EventCreateDto;
+import com.ssafy.enjoytrip.event.dto.EventResponseDto;
+import com.ssafy.enjoytrip.event.dto.EventUpdateMemoDto;
+import com.ssafy.enjoytrip.event.dto.EventUpdateOrderDto;
+import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.event.mapper.EventMapper;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

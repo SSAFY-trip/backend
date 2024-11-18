@@ -4,16 +4,15 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.enjoytrip.service.TripService;
-import com.ssafy.enjoytrip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.trip.service.TripService;
+import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
 
 @RestController
 @RequestMapping("/trips")

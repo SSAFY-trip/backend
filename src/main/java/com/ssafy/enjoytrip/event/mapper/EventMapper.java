@@ -3,6 +3,9 @@ package com.ssafy.enjoytrip.event.mapper;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.ibatis.annotations.*;
+
+import com.ssafy.enjoytrip.event.domain.Event;
 
 @Mapper
 public interface EventMapper {

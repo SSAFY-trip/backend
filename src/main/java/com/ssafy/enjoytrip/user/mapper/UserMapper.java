@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.user.mapper;
 
-import com.ssafy.enjoytrip.domain.User;
+import com.ssafy.enjoytrip.user.domain.User;
 import org.apache.ibatis.annotations.*;
 
 public interface UserMapper {

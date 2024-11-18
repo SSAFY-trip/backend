@@ -1,10 +1,10 @@
 package com.ssafy.enjoytrip.event.dto;
 
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import jakarta.validation.constraints.Size;
 
-import com.ssafy.enjoytrip.domain.Event;
+import com.ssafy.enjoytrip.event.domain.Event;
 
 @Builder
 @Getter
