@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Component
@@ -20,12 +21,12 @@ public class UtilFunction {
         return cookie;
     }
     public void addRefreshEntity(String username, String refresh, Long expiredMs) {
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
+        Timestamp expiration = new Timestamp(System.currentTimeMillis() + expiredMs);
 
         Refresh refreshEntity = new Refresh();
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
+        refreshEntity.setExpiration(expiration);
 
         refreshMapper.save(refreshEntity);
     }
