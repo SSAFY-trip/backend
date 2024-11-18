@@ -40,11 +40,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (IOException e) {
             throw new RuntimeException("JSON 파싱 오류", e);
         }
-
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
-
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
         return authenticationManager.authenticate(authToken);
