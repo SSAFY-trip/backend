@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class RefreshEntity {
+public class Refresh {
     private Long id;
     private String username;
     private String refresh;

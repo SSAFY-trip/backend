@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.mapper;
 
-import com.ssafy.enjoytrip.login.domain.RefreshEntity;
+import com.ssafy.enjoytrip.login.domain.Refresh;
 import org.apache.ibatis.annotations.*;
 @Mapper
 public interface RefreshMapper {
@@ -13,5 +13,5 @@ public interface RefreshMapper {
 
     @Insert("INSERT INTO refresh_entity (username, refresh, expiration) VALUES (#{username}, #{refresh}, #{expiration})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    void save(RefreshEntity refreshEntity);
+    void save(Refresh refresh);
 }

@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.util;
 
-import com.ssafy.enjoytrip.login.domain.RefreshEntity;
+import com.ssafy.enjoytrip.login.domain.Refresh;
 import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class UtilFunction {
     public void addRefreshEntity(String username, String refresh, Long expiredMs) {
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
-        RefreshEntity refreshEntity = new RefreshEntity();
+        Refresh refreshEntity = new Refresh();
         refreshEntity.setUsername(username);
         refreshEntity.setRefresh(refresh);
         refreshEntity.setExpiration(date.toString());
