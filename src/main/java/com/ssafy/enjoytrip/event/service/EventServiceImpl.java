@@ -28,10 +28,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void createEvent(Integer tripId, EventCreateDto eventDto) {
-        Trip trip = tripMapper.getTripById(tripId);
-        if (trip == null) {
-            throw new ResourceNotFoundException("Trip not found with id = " + tripId);
-        }
+        Trip trip = Optional.ofNullable(tripMapper.getTripById(tripId))
+                .orElseThrow(() -> new ResourceNotFoundException("Trip not found with id = " + tripId));
 
         validateEventDateWithinTripRange(eventDto.getDate(), trip);
 
