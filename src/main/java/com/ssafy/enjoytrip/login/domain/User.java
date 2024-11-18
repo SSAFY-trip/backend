@@ -1,11 +1,13 @@
 package com.ssafy.enjoytrip.login.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor
 public class User {
     private Long id;
     private String username;
