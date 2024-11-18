@@ -10,28 +10,20 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class CustomLogoutFilter extends GenericFilterBean {
     private final JWTUtil jwtUtil;
     private final RefreshMapper refreshMapper;
-
-    public CustomLogoutFilter(JWTUtil jwtUtil, RefreshMapper refreshMapper) {
-        this.jwtUtil = jwtUtil;
-        this.refreshMapper = refreshMapper;
-    }
-    // 1. override 해서 request, response를 받아온다.
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
     }
-    // 2. custom을 위해 private으로 doFilter을 또 만들어서 1번에서 받은 값을 전달받는다.
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        // 3. 모든 요청은 이 필터를 통해 거쳐가게 된다. 우리는 그중 requestURI을 확인하여
-        // 경로가 logout이 아니라면 다음 필터로 넘기고(여기서 logout로직을 할 필요가 없으니)
-        // return을 시킨다.
         String requestUri = request.getRequestURI();
         if (!requestUri.matches("^\\/logout$")) {
             filterChain.doFilter(request, response);

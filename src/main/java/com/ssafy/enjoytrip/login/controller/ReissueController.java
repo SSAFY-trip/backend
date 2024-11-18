@@ -15,7 +15,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ReissueController {
     private final ReissueService reissueService;
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-        return reissueService.reissueAccessToken(request);
+    public void reissue(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            reissueService.reissueAccessToken(request, response);
+        } catch (Exception e) {
+            try {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Internal Server Error");
+            } catch (Exception ignored) {
+            }
+        }
     }
 }
