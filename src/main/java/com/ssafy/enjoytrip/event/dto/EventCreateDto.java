@@ -24,10 +24,10 @@ public class EventCreateDto {
     private String memo;
 
     @NotNull(message = "Latitude is required")
-    private Float latitude;
+    private Double latitude;
 
     @NotNull(message = "Longitude is required")
-    private Float longitude;
+    private Double longitude;
 
     private String category;
 

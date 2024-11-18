@@ -38,6 +38,9 @@ public class EventServiceTest {
     @Mock
     private TripMapper tripMapper;
 
+    @Mock
+    private TMapClient tMapClient;
+
     @InjectMocks
     private EventServiceImpl eventService;
 
@@ -64,8 +67,8 @@ public class EventServiceTest {
                 .name("Incheon Internation Airport")
                 .date(LocalDate.now())
                 .memo("Test Event Memo")
-                .latitude(12.12f)
-                .longitude(12.12f)
+                .latitude(12.12)
+                .longitude(12.12)
                 .category("교통")
                 .build();
         event = eventDto.toEntity();
@@ -88,8 +91,8 @@ public class EventServiceTest {
                 .name("Incheon Internation Airport")
                 .date(LocalDate.now().minusDays(1))
                 .memo("Test Event Memo")
-                .latitude(12.12f)
-                .longitude(12.12f)
+                .latitude(12.12)
+                .longitude(12.12)
                 .category("교통")
                 .build();
         event = eventDto.toEntity();
@@ -179,6 +182,20 @@ public class EventServiceTest {
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> eventService.getOrderedEventsByTripId(tripId));
 
         assertEquals("Trip not found with id = " + tripId, exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Test Get All Event Details")
+    void testGetAllEventDetails() throws Exception {
+        // Given
+        int tripId = 1;
+        List<String> placeIds = new ArrayList<>(Arrays.asList("8765399", "219821"));
+        when(eventMapper.getPlaceIdsOfTripId(tripId)).thenReturn(placeIds);
+
+        // WHen
+        eventService.getPlaceDetailsOfAllEvents(tripId);
+
     }
 
     @Test

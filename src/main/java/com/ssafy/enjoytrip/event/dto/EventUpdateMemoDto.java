@@ -20,7 +20,6 @@ public class EventUpdateMemoDto {
 
     public Event toEntity() {
         return Event.builder()
-                .id(id)
                 .memo(memo)
                 .build();
     }

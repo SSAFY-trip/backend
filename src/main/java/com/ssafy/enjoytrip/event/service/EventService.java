@@ -9,7 +9,13 @@ import com.ssafy.enjoytrip.event.dto.*;
 public interface EventService {
     void createEvent(Integer tripId, EventCreateDto eventDto);
 
+    RouteOptimizationResponseDto optimizeRouteOfEvents(Integer tripId, LocalDate date, RouteOptimizationRequestDto requestDto);
+
     Map<LocalDate, List<EventResponseDto>> getOrderedEventsByTripId(Integer tripId);
+
+    Map<String, PlaceDetailResponseDto> getPlaceDetailsOfAllEvents(Integer tripId);
+
+    List<PlaceDetailResponseDto> getPlaceDetailsOfSearch(EventUpdateOrderDto.SearchRequestDto requestDto);
 
     void updateEventMemo(Integer id, EventUpdateMemoDto eventDto);
 

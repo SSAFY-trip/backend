@@ -7,15 +7,13 @@ import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-
 @Builder
 @Getter
 public class Event {
     private Integer id;
 
     private Integer tripId;
-    
+
     @NotBlank
     @NotNull
     private String name;
@@ -29,10 +27,12 @@ public class Event {
     private String memo;
 
     @NotNull
-    private Float latitude;
+    private Double latitude;
 
     @NotNull
-    private Float longitude;
+    private Double longitude;
 
     private String category;
+
+    private String placeId;
 }

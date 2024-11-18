@@ -17,9 +17,9 @@ public class EventResponseDto {
 
     private String memo;
 
-    private Float latitude;
+    private Double latitude;
 
-    private Float longitude;
+    private Double longitude;
 
     private String category;
 

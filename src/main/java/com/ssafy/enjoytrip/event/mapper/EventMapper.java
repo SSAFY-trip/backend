@@ -10,11 +10,12 @@ import com.ssafy.enjoytrip.event.domain.Event;
 @Mapper
 public interface EventMapper {
     @Insert("""
-            INSERT INTO event (trip_id, name, date, `order`, memo, latitude, longitude, category)
+            INSERT INTO event (trip_id, place_id, name, date, `order`, memo, latitude, longitude, category)
             SELECT 
                 #{tripId},
+                #{event.placeId},
                 #{event.name},
-                #{event.date},
+                #{date},
                 COALESCE((SELECT COUNT(*) FROM event WHERE trip_id = #{tripId} AND date = #{date}), 0) + 1,
                 #{event.memo},
                 #{event.latitude},
@@ -24,14 +25,20 @@ public interface EventMapper {
     @Options(useGeneratedKeys = true, keyProperty = "event.id")
     void insertEvent(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("event") Event event);
 
-    @Select("SELECT  * FROM event where id = #{id}")
+    @Select("SELECT  * FROM event WHERE id = #{id}")
     Event getEventById(Integer id);
 
-    @Select("SELECT id FROM event where trip_id = #{tripId} AND date = #{date}")
+    @Select("SELECT id FROM event WHERE trip_id = #{tripId} AND `date` = #{date}")
     List<Integer> getEventIdsOfTripIdAndDate(@Param("tripId") Integer tripId, @Param("date") LocalDate date);
 
-    @Select("SELECT * FROM event WHERE trip_id = #{tripId} ORDER BY date ASC, `order` ASC")
-    List<Event> getOrderedEventsByTripId(Integer trip_id);
+    @Select("SELECT * FROM event WHERE trip_id = #{tripId} AND `date` = #{date}")
+    List<Event> getEventsOfTripIdAndDate(@Param("tripId") Integer tripId, @Param("date") LocalDate date);
+
+    @Select("SELECT place_id FROM event WHERE trip_id = #{tripId} ")
+    List<String> getPlaceIdsOfTripId(@Param("tripId") Integer tripId);
+
+    @Select("SELECT * FROM event WHERE trip_id = #{tripId} ORDER BY `date` ASC, `order` ASC")
+    List<Event> getOrderedEventsByTripId(Integer tripId);
 
     @Update("UPDATE event SET memo=#{memo} WHERE id=#{id}")
     int updateEventMemo(Event event);
@@ -49,7 +56,7 @@ public interface EventMapper {
                     </foreach>
                     END
                 </set>
-                WHERE trip_id = #{tripId} and date = #{date}
+                WHERE trip_id = #{tripId} and `date` = #{date}
                 AND id IN 
                 <foreach collection='events' item='event' open='(' separator=',' close=')'>
                     #{event.id}

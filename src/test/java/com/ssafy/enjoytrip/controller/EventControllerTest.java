@@ -46,7 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EventControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private EventService eventService;
@@ -69,8 +71,8 @@ public class EventControllerTest {
                 .name("Test")
                 .date(LocalDate.now())
                 .memo("memo")
-                .latitude(124.56f)
-                .longitude(124.56f)
+                .latitude(124.56)
+                .longitude(124.56)
                 .category("category")
                 .build();
 
@@ -136,6 +138,7 @@ public class EventControllerTest {
         // Then
         verify(eventService, times(1)).getOrderedEventsByTripId(eq(tripId));
     }
+
 
     @Test
     @DisplayName("Test Update Event Memo")

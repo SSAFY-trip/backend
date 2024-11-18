@@ -38,4 +38,11 @@ public class GlobalExceptionHandler {
         errors.put("message", String.format(ex.getMessage()));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ExternalServiceException.class)
+    public ResponseEntity<Map<String, String>> handleExternalServiceException(ExternalServiceException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", String.format(ex.getMessage()));
+        return new ResponseEntity<>(errors, HttpStatus.BAD_GATEWAY);
+    }
 }
