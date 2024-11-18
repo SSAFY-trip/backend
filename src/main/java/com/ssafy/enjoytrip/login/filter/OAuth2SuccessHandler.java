@@ -43,6 +43,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(utilFunction.createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
 
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:5173/");
     }
 }
