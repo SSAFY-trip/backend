@@ -1,15 +1,8 @@
 package com.ssafy.enjoytrip.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.ssafy.enjoytrip.domain.Event;
-import com.ssafy.enjoytrip.dto.EventCreateDto;
-import com.ssafy.enjoytrip.dto.EventResponseDto;
-import com.ssafy.enjoytrip.dto.EventUpdateMemoDto;
-import com.ssafy.enjoytrip.dto.EventUpdateOrderDto;
-import com.ssafy.enjoytrip.exception.GlobalExceptionHandler;
-import com.ssafy.enjoytrip.service.EventService;
+import java.time.LocalDate;
+import java.util.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +17,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.util.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.ssafy.enjoytrip.event.controller.EventController;
+import com.ssafy.enjoytrip.event.domain.Event;
+import com.ssafy.enjoytrip.event.dto.EventCreateDto;
+import com.ssafy.enjoytrip.event.dto.EventResponseDto;
+import com.ssafy.enjoytrip.event.dto.EventUpdateMemoDto;
+import com.ssafy.enjoytrip.event.dto.EventUpdateOrderDto;
+import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
+import com.ssafy.enjoytrip.event.service.EventService;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasKey;
@@ -44,7 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EventControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private EventService eventService;
@@ -67,8 +71,8 @@ public class EventControllerTest {
                 .name("Test")
                 .date(LocalDate.now())
                 .memo("memo")
-                .latitude(124.56f)
-                .longitude(124.56f)
+                .latitude(124.56)
+                .longitude(124.56)
                 .category("category")
                 .build();
 
@@ -134,6 +138,7 @@ public class EventControllerTest {
         // Then
         verify(eventService, times(1)).getOrderedEventsByTripId(eq(tripId));
     }
+
 
     @Test
     @DisplayName("Test Update Event Memo")

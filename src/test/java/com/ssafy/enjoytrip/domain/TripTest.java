@@ -1,15 +1,17 @@
 package com.ssafy.enjoytrip.domain;
 
+import java.time.LocalDate;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.util.Set;
+import com.ssafy.enjoytrip.trip.domain.Trip;
 
 import static org.junit.jupiter.api.Assertions.*;
 

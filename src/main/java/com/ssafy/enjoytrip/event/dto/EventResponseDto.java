@@ -1,0 +1,36 @@
+package com.ssafy.enjoytrip.event.dto;
+
+import com.ssafy.enjoytrip.event.domain.Event;
+import lombok.Getter;
+
+import java.time.LocalDate;
+
+@Getter
+public class EventResponseDto {
+    private Integer id;
+
+    private String name;
+
+    private LocalDate date;
+
+    private Integer order;
+
+    private String memo;
+
+    private Double latitude;
+
+    private Double longitude;
+
+    private String category;
+
+    public EventResponseDto(Event event) {
+        this.id = event.getId();
+        this.name = event.getName();
+        this.date = event.getDate();
+        this.order = event.getOrder();
+        this.memo = event.getMemo();
+        this.latitude = event.getLatitude();
+        this.longitude = event.getLongitude();
+        this.category = event.getCategory();
+    }
+}

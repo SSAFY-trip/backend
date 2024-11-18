@@ -1,11 +1,9 @@
 package com.ssafy.enjoytrip.service;
 
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.repository.TripMapper;
-import com.ssafy.enjoytrip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.dto.TripUpdateDto;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,9 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
+import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.trip.service.TripServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

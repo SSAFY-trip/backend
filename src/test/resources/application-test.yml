@@ -10,3 +10,13 @@ mybatis:
   type-aliases-package: com.ssafy.enjoytrip.domain
   configuration:
     map-underscore-to-camel-case: true
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
+    api-key:
+      kakao: 2dc26b6f1c48e13cc7a3f44a2833dd67
+      tMap: SWPJtDr6YF8BLa8jRgW2j8v4vIysoLEVa7Hm1bHV

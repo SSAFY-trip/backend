@@ -2,9 +2,9 @@
 //
 //import static org.junit.jupiter.api.Assertions.*;
 //
-//import com.ssafy.enjoytrip.domain.User;
-//import com.ssafy.enjoytrip.repository.UserMapper;
-//import com.ssafy.enjoytrip.service.UserServiceImpl;
+//import com.ssafy.enjoytrip.user.domain.User;
+//import com.ssafy.enjoytrip.user.mapper.UserMapper;
+//import com.ssafy.enjoytrip.user.service.UserServiceImpl;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;

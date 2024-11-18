@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.ssafy.enjoytrip.domain.Event;
-import com.ssafy.enjoytrip.domain.Trip;
-import com.ssafy.enjoytrip.repository.EventMapper;
-import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.event.domain.Event;
+import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.event.mapper.EventMapper;
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,8 +62,8 @@ public class EventMapperTest {
                 .name("Test Event 1")
                 .date(LocalDate.now())
                 .memo("Test Memo 1")
-                .latitude(12.34f)
-                .longitude(56.78f)
+                .latitude(12.34)
+                .longitude(56.78)
                 .category("Category 1")
                 .build();
 
@@ -87,8 +87,8 @@ public class EventMapperTest {
                 .date(LocalDate.now())
                 .order(1)
                 .memo("Test Memo 1")
-                .latitude(12.34f)
-                .longitude(56.78f)
+                .latitude(12.34)
+                .longitude(56.78)
                 .category("Category 1")
                 .build();
 
@@ -135,6 +135,8 @@ public class EventMapperTest {
         assertTrue(events.get(1).getName().equals(event3.getName()));
         assertTrue(events.get(2).getName().equals(event2.getName()));
     }
+
+
 
     @Test
     @DisplayName("Test Update Event Memo")
