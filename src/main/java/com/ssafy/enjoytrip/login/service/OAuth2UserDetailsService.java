@@ -7,7 +7,7 @@ import com.ssafy.enjoytrip.login.details.OAuth2UserDetails;
 import com.ssafy.enjoytrip.login.domain.Role;
 import com.ssafy.enjoytrip.login.domain.User;
 import com.ssafy.enjoytrip.login.dto.UserDTO;
-import com.ssafy.enjoytrip.login.repository.UserMapper;
+import com.ssafy.enjoytrip.login.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

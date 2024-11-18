@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.login.util;
 
 import com.ssafy.enjoytrip.login.domain.RefreshEntity;
-import com.ssafy.enjoytrip.login.repository.RefreshMapper;
+import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

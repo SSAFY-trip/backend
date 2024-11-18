@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.filter;
 
-import com.ssafy.enjoytrip.login.repository.RefreshMapper;
+import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

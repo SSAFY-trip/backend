@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.login.service;
 
 import com.ssafy.enjoytrip.login.details.JWTUserDetails;
 import com.ssafy.enjoytrip.login.domain.User;
-import com.ssafy.enjoytrip.login.repository.UserMapper;
+import com.ssafy.enjoytrip.login.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

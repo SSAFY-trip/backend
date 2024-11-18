@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.login.repository;
+package com.ssafy.enjoytrip.login.mapper;
 
 import com.ssafy.enjoytrip.login.domain.User;
 import org.apache.ibatis.annotations.*;
