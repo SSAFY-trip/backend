@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.login.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.login.domain.Role;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import com.ssafy.enjoytrip.login.util.UtilFunction;
@@ -15,8 +16,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -25,8 +28,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final UtilFunction utilFunction;
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        String username = null;
+        String password = null;
+
+        try {
+            // JSON 데이터 파싱
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
+            username = requestBody.get("username");
+            password = requestBody.get("password");
+        } catch (IOException e) {
+            throw new RuntimeException("JSON 파싱 오류", e);
+        }
+
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
