@@ -40,7 +40,7 @@ public class TripController {
         return ResponseEntity.ok(trips);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> updateTrip(@PathVariable Integer id, @RequestBody @Valid TripUpdateDto tripDto) {
         tripService.updateTrip(id, tripDto);
         return ResponseEntity.noContent().build();
