@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.enjoytrip.event.service;
 
 import java.time.LocalDate;
 import java.util.*;
