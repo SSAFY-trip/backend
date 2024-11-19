@@ -3,31 +3,29 @@ package com.ssafy.enjoytrip.controller;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import com.ssafy.enjoytrip.user.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
-import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.trip.controller.TripController;
-import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
-import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
-import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
-import com.ssafy.enjoytrip.trip.service.TripService;
+
+import com.ssafy.enjoytrip.domain.Trip;
+import com.ssafy.enjoytrip.dto.TripCreateDto;
+import com.ssafy.enjoytrip.dto.TripResponseDto;
+import com.ssafy.enjoytrip.dto.TripUpdateDto;
+import com.ssafy.enjoytrip.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.repository.TripMapper;
+import com.ssafy.enjoytrip.service.TripService;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -38,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @WebMvcTest(TripController.class)
 @WithMockUser
-@ContextConfiguration(classes = { TripController.class, GlobalExceptionHandler.class })
 class TripControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -47,8 +44,11 @@ class TripControllerTest {
     @MockBean
     private TripService tripService;
 
-    @Mock
+    @MockBean
     private TripMapper tripMapper;
+
+    @MockBean
+    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -210,7 +210,7 @@ class TripControllerTest {
                 .build();
 
         // When
-        mockMvc.perform(patch("/trips/1")
+        mockMvc.perform(put("/trips/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
@@ -235,7 +235,7 @@ class TripControllerTest {
         tripUpdateDto.setUpdateId(1);
 
         // When
-        mockMvc.perform(patch("/trips/1")
+        mockMvc.perform(put("/trips/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
@@ -266,7 +266,7 @@ class TripControllerTest {
                 .when(tripService).updateTrip(eq(nonExistingId), refEq(tripUpdateDto));
 
         // When
-        mockMvc.perform(patch("/trips/" + nonExistingId)
+        mockMvc.perform(put("/trips/" + nonExistingId)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tripUpdateDto)))
