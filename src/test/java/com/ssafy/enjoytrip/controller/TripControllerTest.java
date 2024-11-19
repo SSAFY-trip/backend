@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.controller;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import com.ssafy.enjoytrip.login.mapper.UserMapper;
+import com.ssafy.enjoytrip.user.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

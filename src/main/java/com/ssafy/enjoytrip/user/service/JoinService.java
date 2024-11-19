@@ -1,9 +1,9 @@
-package com.ssafy.enjoytrip.login.service;
+package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.login.domain.Role;
-import com.ssafy.enjoytrip.login.domain.User;
-import com.ssafy.enjoytrip.login.dto.JoinDTO;
-import com.ssafy.enjoytrip.login.mapper.UserMapper;
+import com.ssafy.enjoytrip.user.domain.Role;
+import com.ssafy.enjoytrip.user.domain.User;
+import com.ssafy.enjoytrip.user.dto.JoinDTO;
+import com.ssafy.enjoytrip.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

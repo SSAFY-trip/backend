@@ -1,14 +1,12 @@
 package com.ssafy.enjoytrip.login.filter;
 
-import com.ssafy.enjoytrip.login.details.OAuth2UserDetails;
-import com.ssafy.enjoytrip.login.domain.Role;
+import com.ssafy.enjoytrip.login.dto.OAuth2UserDetails;
+import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
-import com.ssafy.enjoytrip.login.util.UtilFunction;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

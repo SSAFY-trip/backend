@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.util;
 
-import com.ssafy.enjoytrip.login.domain.Role;
+import com.ssafy.enjoytrip.user.domain.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;

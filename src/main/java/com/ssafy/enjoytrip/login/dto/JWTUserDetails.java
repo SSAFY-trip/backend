@@ -1,6 +1,6 @@
-package com.ssafy.enjoytrip.login.details;
+package com.ssafy.enjoytrip.login.dto;
 
-import com.ssafy.enjoytrip.login.domain.User;
+import com.ssafy.enjoytrip.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

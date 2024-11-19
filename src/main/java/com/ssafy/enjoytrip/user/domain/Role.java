@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.login.domain;
+package com.ssafy.enjoytrip.user.domain;
 public enum Role {
     ROLE_USER, ROLE_ADMIN, ROLE_GUEST;
     public static boolean isValidRole(String role) {

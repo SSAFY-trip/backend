@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.service;
 
-import com.ssafy.enjoytrip.login.domain.Role;
+import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import com.ssafy.enjoytrip.login.util.UtilFunction;

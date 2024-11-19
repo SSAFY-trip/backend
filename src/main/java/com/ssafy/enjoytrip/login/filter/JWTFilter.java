@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.login.filter;
 
-import com.ssafy.enjoytrip.login.details.JWTUserDetails;
-import com.ssafy.enjoytrip.login.domain.Role;
-import com.ssafy.enjoytrip.login.domain.User;
+import com.ssafy.enjoytrip.login.dto.JWTUserDetails;
+import com.ssafy.enjoytrip.user.domain.Role;
+import com.ssafy.enjoytrip.user.domain.User;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

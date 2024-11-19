@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.login.Response;
 
 
-import com.ssafy.enjoytrip.login.domain.AuthProvider;
+import com.ssafy.enjoytrip.user.domain.AuthProvider;
 
 public interface OAuth2Response {
     AuthProvider getProvider();

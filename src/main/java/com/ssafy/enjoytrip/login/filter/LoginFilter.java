@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.login.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.enjoytrip.login.domain.Role;
+import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import com.ssafy.enjoytrip.login.util.UtilFunction;
 import jakarta.servlet.FilterChain;

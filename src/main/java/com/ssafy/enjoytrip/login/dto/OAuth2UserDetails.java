@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.login.details;
+package com.ssafy.enjoytrip.login.dto;
 
 import com.ssafy.enjoytrip.login.dto.UserDTO;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package com.ssafy.enjoytrip.login.controller;
+package com.ssafy.enjoytrip.user.controller;
 
-import com.ssafy.enjoytrip.login.dto.JoinDTO;
-import com.ssafy.enjoytrip.login.service.JoinService;
+import com.ssafy.enjoytrip.user.dto.JoinDTO;
+import com.ssafy.enjoytrip.user.service.JoinService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,6 @@
-package com.ssafy.enjoytrip.login.domain;
+package com.ssafy.enjoytrip.user.domain;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
