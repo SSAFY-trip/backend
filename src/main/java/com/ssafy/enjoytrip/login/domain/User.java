@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.login.domain;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,9 +12,17 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User {
     private Long id;
+
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String name;
     private AuthProvider provider;
     private Role role;

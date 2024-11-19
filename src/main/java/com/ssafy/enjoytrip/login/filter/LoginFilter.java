@@ -32,7 +32,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String password = null;
 
         try {
-            // JSON 데이터 파싱
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
             username = requestBody.get("username");

@@ -38,8 +38,6 @@ public class JWTUtil {
             return null;
         }
     }
-
-
     // 토큰에서 만료여부 검증,추출하는 메서드
     public Boolean isExpired(String token) {
         try {
@@ -49,8 +47,6 @@ public class JWTUtil {
             return true; // 만료된 경우 true 반환
         }
     }
-    // 토큰 생성 메서드
-    // category, username, role, 토큰유효시간 을 입력받아 JWT 토큰을 생성해 String 형태로 반환
     public String createJwt(String category, String username, Role role, Long expiredMs) {
         return Jwts.builder()
                 .claim("category", category) // access, refresh 판단용
