@@ -52,10 +52,6 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
             return new OAuth2UserDetails(userDTO);
         }
         else {
-            user.setEmail(oAuth2Response.getEmail());
-            user.setName(oAuth2Response.getName());
-
-            userRepository.save(user);
             UserDTO userDTO = UserDTO.builder()
                     .role(user.getRole())
                     .username(user.getUsername())

@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -22,11 +23,9 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
-    private final UtilFunction utilFunction;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2UserDetails customUserDetails = (OAuth2UserDetails) authentication.getPrincipal();
-
         String username = customUserDetails.getUsername();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -34,15 +33,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         Role role = Role.valueOf(auth.getAuthority());
 
-        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String temporaryToken = jwtUtil.createJwt("temporary", username, role, 3000L); // 3초 유효기간
 
-        utilFunction.addRefreshEntity(username, refresh);
+        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth2/redirect")
+                .queryParam("temporaryToken", temporaryToken)
+                .build().toUriString();
 
-        response.setHeader("access", access);
-        response.addCookie(utilFunction.createCookie("refresh", refresh));
-        response.setStatus(HttpStatus.OK.value());
-
-        response.sendRedirect("http://localhost:5173/");
+        response.sendRedirect(redirectUrl);
     }
 }
