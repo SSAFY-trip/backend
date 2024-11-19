@@ -9,8 +9,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,8 +33,6 @@ public class ReissueService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("refresh token null");
             return;
-
-//            return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
 
         // 2. 만료 여부 확인
@@ -46,8 +42,6 @@ public class ReissueService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("refresh token expired");
             return;
-
-//            return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
 
         // 3. 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
@@ -56,8 +50,6 @@ public class ReissueService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("invalid refresh token");
             return;
-
-//            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
         // DB에 저장되어 있는지 확인
         Boolean isExist = refreshMapper.existsByRefresh(refresh);
@@ -65,8 +57,6 @@ public class ReissueService {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("invalid refresh token");
             return;
-
-//            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
         String username = jwtUtil.getUsername(refresh);
