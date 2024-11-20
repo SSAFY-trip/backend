@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.openfeign;
+package com.ssafy.enjoytrip.openfeign.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
