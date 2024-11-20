@@ -27,7 +27,7 @@ public class TripAdaptor {
     }
 
     public Trip getTripById(int id) {
-        return Optional.of(tripMapper.getTripById(id))
+        return Optional.ofNullable(tripMapper.getTripById(id))
                 .orElseThrow(TripNotFoundException::new);
     }
 

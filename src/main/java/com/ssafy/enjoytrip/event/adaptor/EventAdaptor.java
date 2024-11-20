@@ -31,13 +31,13 @@ public class EventAdaptor {
     }
 
     public Event getEventById(Integer id) {
-        return Optional.of(eventMapper.getEventById(id))
+        return Optional.ofNullable(eventMapper.getEventById(id))
                 .orElseThrow(EventNotFoundException::new);
     }
 
     public Event getEventOfTripById(Integer tripId, Integer id) {
         validateEventId(id);
-        return Optional.of(eventMapper.getEventOfTripById(tripId, id))
+        return Optional.ofNullable(eventMapper.getEventOfTripById(tripId, id))
                 .orElseThrow(EventOfTripNotFoundException::new);
     }
 
@@ -94,7 +94,7 @@ public class EventAdaptor {
     public void deleteEvent(Integer tripId, Integer id) {
         validateTripId(tripId);
         validateEventId(id);
-        Optional.of(eventMapper.deleteEventOfTripById(tripId, id))
+        Optional.ofNullable(eventMapper.deleteEventOfTripById(tripId, id))
                 .orElseThrow(EventOfTripNotFoundException::new);
     }
 
