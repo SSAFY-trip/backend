@@ -25,17 +25,6 @@ public class EventResponseDto {
 
     private String category;
 
-    public EventResponseDto(Event event) {
-        this.id = event.getId();
-        this.name = event.getName();
-        this.date = event.getDate();
-        this.order = event.getOrder();
-        this.memo = event.getMemo();
-        this.latitude = event.getLatitude();
-        this.longitude = event.getLongitude();
-        this.category = event.getCategory();
-    }
-
     public static EventResponseDto of(Event event) {
         return EventResponseDto.builder()
                 .id(event.getId())
