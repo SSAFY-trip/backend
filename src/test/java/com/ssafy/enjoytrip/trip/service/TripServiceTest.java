@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.service;
+package com.ssafy.enjoytrip.trip.service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -11,22 +11,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ssafy.enjoytrip.trip.adaptor.TripAdaptor;
 import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
-import com.ssafy.enjoytrip.trip.service.TripServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TripServiceTest {
-
     @Mock
-    private TripMapper tripMapper;
+    private TripAdaptor tripAdaptor;
 
     @InjectMocks
     private TripServiceImpl tripService;
@@ -49,7 +46,7 @@ class TripServiceTest {
         tripService.createTrip(tripCreateDto);
 
         // Then
-        verify(tripMapper, times(1)).insertTrip(refEq(trip));
+        verify(tripAdaptor, times(1)).insertTrip(refEq(trip));
     }
 
     @Test
@@ -65,7 +62,7 @@ class TripServiceTest {
                 .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
-        when(tripMapper.getTripById(1)).thenReturn(trip);
+        when(tripAdaptor.getTripById(1)).thenReturn(trip);
 
         // When
         TripResponseDto result = tripService.getTripById(1);
@@ -73,18 +70,7 @@ class TripServiceTest {
         // Then
         assertNotNull(result, "TripResponseDto should not be null");
         assertEquals(trip.getName(), result.getName(), "Trip name should match");
-        verify(tripMapper, times(1)).getTripById(1);
-    }
-
-    @Test
-    @DisplayName("Get Trip - raise ResourceNotFoundException when not found")
-    void testGetTripById_shouldThrowExceptionWhenTripNotFound() {
-        // Given
-        when(tripMapper.getTripById(1)).thenReturn(null);
-
-        // When & Then
-        assertThrows(ResourceNotFoundException.class, () -> tripService.getTripById(1));
-        verify(tripMapper, times(1)).getTripById(1);
+        verify(tripAdaptor, times(1)).getTripById(1);
     }
 
     @Test
@@ -111,7 +97,7 @@ class TripServiceTest {
                 .isPublic(true)
                 .build();
 
-        when(tripMapper.getAllTrips()).thenReturn(Arrays.asList(trip1, trip2));
+        when(tripAdaptor.getAllTrips()).thenReturn(Arrays.asList(trip1, trip2));
 
         // When
         List<TripResponseDto> result = tripService.getAllTrips();
@@ -120,7 +106,7 @@ class TripServiceTest {
         assertEquals(2, result.size(), "Should return a list with 2 trips");
         assertEquals("Paris", result.get(0).getName(), "First trip name should match");
         assertEquals("Rome", result.get(1).getName(), "Second trip name should match");
-        verify(tripMapper, times(1)).getAllTrips();
+        verify(tripAdaptor, times(1)).getAllTrips();
     }
 
     @Test
@@ -138,58 +124,21 @@ class TripServiceTest {
         tripUpdateDto.setUpdateId(1);
 
         Trip updatedTrip = tripUpdateDto.toEntity();
-        when(tripMapper.updateTrip(refEq(updatedTrip))).thenReturn(1);
 
         // When
         tripService.updateTrip(1, tripUpdateDto);
 
         // Then
-        verify(tripMapper, times(1)).updateTrip(refEq(updatedTrip));
-    }
-
-    @Test
-    @DisplayName("Update Trip - raise ResourceNotFoundException when not found")
-    void testUpdateTrip_shouldThrowExceptionWhenTripNotFound() {
-        // Given
-        TripUpdateDto tripUpdateDto = TripUpdateDto.builder()
-                .name("Updated Trip")
-                .startDate(LocalDate.of(2023, 1, 1))
-                .endDate(LocalDate.of(2023, 1, 10))
-                .tripOverview("Updated overview")
-                .imgUrl("http://example.com/image.jpg")
-                .isPublic(false)
-                .build();
-        tripUpdateDto.setUpdateId(1);
-
-        Trip updatedTrip = tripUpdateDto.toEntity();
-        when(tripMapper.updateTrip(refEq(updatedTrip))).thenReturn(0);
-
-        // When & Then
-        assertThrows(ResourceNotFoundException.class, () -> tripService.updateTrip(1, tripUpdateDto));
-        verify(tripMapper, times(1)).updateTrip(refEq(updatedTrip));
+        verify(tripAdaptor, times(1)).updateTrip(refEq(updatedTrip));
     }
 
     @Test
     @DisplayName("Delete Trip - calls deleteById()")
     void deleteTrip_shouldDeleteTrip() {
-        // Given
-        when(tripMapper.deleteTrip(1)).thenReturn(1);
-
         // When
         tripService.deleteTrip(1);
 
         // Then
-        verify(tripMapper, times(1)).deleteTrip(1);
-    }
-
-    @Test
-    @DisplayName("Delete Trip - raise ResourceNotFoundException when not found")
-    void deleteTrip_shouldThrowExceptionWhenTripNotFound() {
-        // Given
-        when(tripMapper.deleteTrip(1)).thenReturn(0);
-
-        // When & Then
-        assertThrows(ResourceNotFoundException.class, () -> tripService.deleteTrip(1));
-        verify(tripMapper, times(1)).deleteTrip(1);
+        verify(tripAdaptor, times(1)).deleteTrip(1);
     }
 }

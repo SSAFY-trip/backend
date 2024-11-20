@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.enjoytrip.openfeign.client.TMapClient;
 import com.ssafy.enjoytrip.openfeign.dto.TMapPlaceSearchResponseDto;
 import com.ssafy.enjoytrip.openfeign.dto.TMapRouteOptimizationRequestDto;
 import com.ssafy.enjoytrip.openfeign.dto.TMapRouteOptimizationResponseDto;

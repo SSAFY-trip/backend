@@ -7,7 +7,6 @@ spring:
   thymeleaf:
     check-template-location: false
 mybatis:
-  type-aliases-package: com.ssafy.enjoytrip.domain
   configuration:
     map-underscore-to-camel-case: true
 feign:

@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.mapper;
+package com.ssafy.enjoytrip.trip.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
 

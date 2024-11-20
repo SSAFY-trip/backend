@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.mapper;
+package com.ssafy.enjoytrip.event.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.ssafy.enjoytrip.event.domain.Event;
 import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.event.mapper.EventMapper;
 import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,12 +79,11 @@ public class EventMapperTest {
 
     @Test
     @DisplayName("Test Insert Event - auto-incremented id & order value")
-    void testInsertEventAutoIncrementedId() {
-        // GIven
+    void testInsertEventAutoIncrementedIdAndOrder() {
+        // Given
         event1 = Event.builder()
                 .name("Test Event 1")
                 .date(LocalDate.now())
-                .order(1)
                 .memo("Test Memo 1")
                 .latitude(12.34)
                 .longitude(56.78)
@@ -264,7 +262,7 @@ public class EventMapperTest {
         eventMapper.insertEvent(trip.getId(), event1.getDate(), event1);
 
         // When
-        int rowsEffected = eventMapper.deleteEvent(tripId, event1.getId());
+        int rowsEffected = eventMapper.deleteEventById(event1.getId());
 
         // Then
         Event fetchedEvent = eventMapper.getEventById(event1.getId());

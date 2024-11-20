@@ -1,9 +1,10 @@
-package com.ssafy.enjoytrip.controller;
+package com.ssafy.enjoytrip.event.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
+import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,6 @@ import com.ssafy.enjoytrip.event.dto.EventUpdateOrderDto;
 import com.ssafy.enjoytrip.event.mapper.EventMapper;
 import com.ssafy.enjoytrip.event.dto.RouteOptimizationRequestDto;
 import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

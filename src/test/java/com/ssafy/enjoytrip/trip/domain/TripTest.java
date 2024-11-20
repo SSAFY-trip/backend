@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.domain;
+package com.ssafy.enjoytrip.trip.domain;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -10,8 +10,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
-
-import com.ssafy.enjoytrip.trip.domain.Trip;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,37 +84,5 @@ class TripTest {
 
         Set<ConstraintViolation<Trip>> violations = validator.validate(invalidTrip);
         assertFalse(violations.isEmpty(), "Should have validation violations for null start date");
-    }
-
-    @Test
-    @DisplayName("Test invalid end date (not null, date after start date)")
-    void testInvalidEndDate() {
-        // Invalid trip with null end date
-        Trip invalidTripWithNullEndDate = Trip.builder()
-                .id(null)
-                .name("Trip to Paris")
-                .startDate(LocalDate.of(2023, 1, 10))
-                .endDate(null)
-                .tripOverview("Overview")
-                .imgUrl("imgUrl")
-                .isPublic(true)
-                .build();
-
-        Set<ConstraintViolation<Trip>> violations = validator.validate(invalidTripWithNullEndDate);
-        assertFalse(violations.isEmpty(), "Should have validation violations for null end date");
-
-        // Invalid trip with end date before start date
-        Trip invalidTripWithInvalidDateRange = Trip.builder()
-                .id(null)
-                .name("Trip to Paris")
-                .startDate(LocalDate.of(2023, 1, 10))
-                .endDate(LocalDate.of(2023, 1, 1))
-                .tripOverview("Overview")
-                .imgUrl("imgUrl")
-                .isPublic(true)
-                .build();
-
-        violations = validator.validate(invalidTripWithInvalidDateRange);
-        assertFalse(violations.isEmpty(), "Should have validation violations for end date before start date");
     }
 }

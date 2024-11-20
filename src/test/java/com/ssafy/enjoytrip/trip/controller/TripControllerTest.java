@@ -1,12 +1,14 @@
-package com.ssafy.enjoytrip.controller;
+package com.ssafy.enjoytrip.trip.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,40 +17,42 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
-import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
-import com.ssafy.enjoytrip.trip.controller.TripController;
+import com.ssafy.enjoytrip.global.exception.GlobalExceptionHandler;
+import com.ssafy.enjoytrip.global.exception.GlobalErrorCode;
+import com.ssafy.enjoytrip.trip.exception.TripErrorCode;
+import com.ssafy.enjoytrip.trip.exception.TripNotFoundException;
 import com.ssafy.enjoytrip.trip.domain.Trip;
 import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 import com.ssafy.enjoytrip.trip.service.TripService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @ActiveProfiles("test")
 @WebMvcTest(TripController.class)
 @WithMockUser
-@ContextConfiguration(classes = { TripController.class, GlobalExceptionHandler.class })
+@ContextConfiguration(classes = {TripController.class, GlobalExceptionHandler.class})
+
 class TripControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @MockBean
     private TripService tripService;
-
-    @Mock
-    private TripMapper tripMapper;
 
     @BeforeEach
     void setUp() {
@@ -70,13 +74,14 @@ class TripControllerTest {
                 .build();
 
         // When
-        mockMvc.perform(post("/trips")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripCreateDto)))
-                .andExpect(status().isCreated());
+        ResultActions resultActions = mockMvc.perform(post("/trips")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripCreateDto)));
 
         // Then
+        resultActions.andExpect(status().isCreated());
+
         verify(tripService, times(1)).createTrip(any(TripCreateDto.class));
     }
 
@@ -85,22 +90,28 @@ class TripControllerTest {
     void testCreateTripWithInvalidData() throws Exception {
         // Given
         TripCreateDto invalidTripCreateDto = TripCreateDto.builder()
-                .name("Paris")
-                .startDate(LocalDate.of(2023, 1, 1))
-                .endDate(LocalDate.of(2022, 1, 10))
-                .tripOverview("A wonderful trip to Paris.")
+                .name(RandomStringUtils.randomAlphanumeric(16))
+                .tripOverview(RandomStringUtils.randomAlphanumeric(101))
                 .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
         // When
-        mockMvc.perform(post("/trips")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidTripCreateDto)))
-                .andExpect(status().isBadRequest());
+        ResultActions resultActions = mockMvc.perform(post("/trips")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalidTripCreateDto)));
 
         // Then
+        resultActions
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(
+                        GlobalErrorCode.VALIDATION_FAILED.getCode(),
+                        getCode(result),
+                        "Expected error code does not match."))
+                .andDo(result -> printResponse(result));
+
         verify(tripService, never()).createTrip(any(TripCreateDto.class));
     }
 
@@ -118,19 +129,21 @@ class TripControllerTest {
                 .isPublic(true)
                 .build();
 
-        TripResponseDto tripResponseDto = new TripResponseDto(trip);
+        TripResponseDto tripResponseDto = TripResponseDto.of(trip);
 
         when(tripService.getTripById(1)).thenReturn(tripResponseDto);
 
         // When
-        mockMvc.perform(get("/trips/1")
-                        .with(csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+        ResultActions resultActions = mockMvc.perform(get("/trips/1")
+                .with(csrf())
+                .accept(MediaType.APPLICATION_JSON));
+
+        // Then
+        resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Paris"));
 
-        // Then
         verify(tripService, times(1)).getTripById(1);
     }
 
@@ -141,17 +154,22 @@ class TripControllerTest {
         int nonExistingId = 1;
 
         when(tripService.getTripById(nonExistingId))
-                .thenThrow(new ResourceNotFoundException("Trip not found with id = " + nonExistingId));
+                .thenThrow(new TripNotFoundException());
 
         // When
-        mockMvc.perform(get("/trips/" + nonExistingId)
-                        .with(csrf())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value("Trip not found with id = " + nonExistingId));
+        ResultActions resultActions = mockMvc.perform(get("/trips/" + nonExistingId)
+                .with(csrf())
+                .accept(MediaType.APPLICATION_JSON));
 
         // Then
+        resultActions
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(
+                        TripErrorCode.TRIP_NOT_FOUND.getCode(),
+                        getCode(result),
+                        "Expected error code does not match."));
+
         verify(tripService, times(1)).getTripById(1);
     }
 
@@ -179,20 +197,22 @@ class TripControllerTest {
                 .isPublic(true)
                 .build();
 
-        TripResponseDto tripResponse1 = new TripResponseDto(trip1);
-        TripResponseDto tripResponse2 = new TripResponseDto(trip2);
+        TripResponseDto tripResponse1 = TripResponseDto.of(trip1);
+        TripResponseDto tripResponse2 = TripResponseDto.of(trip2);
 
         when(tripService.getAllTrips()).thenReturn(Arrays.asList(tripResponse1, tripResponse2));
 
         // When
-        mockMvc.perform(get("/trips")
-                        .with(csrf())
-                        .accept(MediaType.APPLICATION_JSON))
+        ResultActions resultActions = mockMvc.perform(get("/trips")
+                .with(csrf())
+                .accept(MediaType.APPLICATION_JSON));
+
+        // Then
+        resultActions
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()").value(2));
 
-        // Then
         verify(tripService, times(1)).getAllTrips();
     }
 
@@ -210,13 +230,15 @@ class TripControllerTest {
                 .build();
 
         // When
-        mockMvc.perform(patch("/trips/1")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripUpdateDto)))
-                .andExpect(status().isNoContent());
+        ResultActions resultActions = mockMvc.perform(patch("/trips/1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripUpdateDto)));
 
         // Then
+        resultActions
+                .andExpect(status().isNoContent());
+
         verify(tripService, times(1)).updateTrip(eq(1), any(TripUpdateDto.class));
     }
 
@@ -225,23 +247,29 @@ class TripControllerTest {
     void testUpdateTripWithInvalidData() throws Exception {
         // Given
         TripUpdateDto tripUpdateDto = TripUpdateDto.builder()
-                .name("Paris")
-                .startDate(LocalDate.of(2023, 1, 1))
-                .endDate(LocalDate.of(2022, 1, 15))
-                .tripOverview("A wonderful trip to Paris.")
+                .name(RandomStringUtils.randomAlphanumeric(16))
+                .tripOverview(RandomStringUtils.randomAlphanumeric(101))
                 .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
         tripUpdateDto.setUpdateId(1);
 
         // When
-        mockMvc.perform(patch("/trips/1")
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripUpdateDto)))
-                .andExpect(status().isBadRequest());
+        ResultActions resultActions = mockMvc.perform(patch("/trips/1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripUpdateDto)));
 
         // Then
+        resultActions
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(
+                        GlobalErrorCode.VALIDATION_FAILED.getCode(),
+                        getCode(result),
+                        "Expected error code does not match."))
+                .andDo(result -> printResponse(result));
+
         verify(tripService, never()).updateTrip(eq(1), any(TripUpdateDto.class));
     }
 
@@ -262,17 +290,24 @@ class TripControllerTest {
 
         tripUpdateDto.setUpdateId(nonExistingId);
 
-        doThrow(new ResourceNotFoundException("Trip not found with id = " + nonExistingId))
+        doThrow(new TripNotFoundException())
                 .when(tripService).updateTrip(eq(nonExistingId), refEq(tripUpdateDto));
 
         // When
-        mockMvc.perform(patch("/trips/" + nonExistingId)
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tripUpdateDto)))
-                .andExpect(status().isNotFound());
+        ResultActions resultActions = mockMvc.perform(patch("/trips/" + nonExistingId)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripUpdateDto)));
 
         // Then
+        resultActions
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(
+                        TripErrorCode.TRIP_NOT_FOUND.getCode(),
+                        getCode(result),
+                        "Expected error code does not match."));
+        ;
         verify(tripService, times(1)).updateTrip(eq(nonExistingId), refEq(tripUpdateDto));
     }
 
@@ -283,11 +318,11 @@ class TripControllerTest {
         int tripId = 1;
 
         // When
-        mockMvc.perform(delete("/trips/" + tripId)
-                        .with(csrf()))
-                .andExpect(status().isNoContent());
+        ResultActions resultActions = mockMvc.perform(delete("/trips/" + tripId)
+                .with(csrf()));
 
         // Given
+        resultActions.andExpect(status().isNoContent());
         verify(tripService, times(1)).deleteTrip(tripId);
     }
 
@@ -297,15 +332,38 @@ class TripControllerTest {
         // Given
         int nonExistingId = 1;
 
-        doThrow(new ResourceNotFoundException("Trip not found with id = " + nonExistingId))
+        doThrow(new TripNotFoundException())
                 .when(tripService).deleteTrip(nonExistingId);
 
         // When
-        mockMvc.perform(delete("/trips/" + nonExistingId)
-                        .with(csrf()))
-                .andExpect(status().isNotFound());
+        ResultActions resultActions = mockMvc.perform(delete("/trips/" + nonExistingId)
+                .with(csrf()));
 
         // Given
+        resultActions
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals(
+                        TripErrorCode.TRIP_NOT_FOUND.getCode(),
+                        getCode(result),
+                        "Expected error code does not match."));
+
         verify(tripService, times(1)).deleteTrip(nonExistingId);
+    }
+
+    /*
+    utils
+     */
+    void printResponse(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        Object json = objectMapper.readValue(jsonResponse, Object.class); // Deserialize
+        String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json); // Pretty print
+
+        System.out.println(prettyJson);
+    }
+
+    String getCode(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
+        return objectMapper.readTree(result.getResponse().getContentAsString()).get("code").asText();
     }
 }
