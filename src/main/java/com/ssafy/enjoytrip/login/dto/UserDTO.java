@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.dto;
 
-import com.ssafy.enjoytrip.global.EnumValue;
+import com.ssafy.enjoytrip.global.enumvalidator.EnumValue;
 import com.ssafy.enjoytrip.user.domain.Role;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
