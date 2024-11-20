@@ -14,15 +14,16 @@ CREATE TABLE IF NOT EXISTS `sido` (
 );
 
 CREATE TABLE IF NOT EXISTS `user` (
-                                      `id` INT NOT NULL AUTO_INCREMENT,
-                                      `name` VARCHAR(10) NULL,
-                                      `email` VARCHAR(50) NULL,
-                                      `pwd` VARCHAR(15) NULL,
-                                      `coin` INT NULL,
-                                      PRIMARY KEY (`id`)
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    provider ENUM('BOTH', 'LOCAL', 'GOOGLE', 'KAKAO', 'NAVER') NOT NULL,
+    role ENUM('ROLE_USER', 'ROLE_ADMIN', 'ROLE_GUEST') NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `trip` (
+CREATE TABLE `trip` (
                                       `id` INT NOT NULL AUTO_INCREMENT,
                                       `name` VARCHAR(15) NULL,
                                       `start_date` DATE NULL,

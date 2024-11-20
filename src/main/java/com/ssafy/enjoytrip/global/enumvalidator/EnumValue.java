@@ -1,5 +1,6 @@
-package com.ssafy.enjoytrip.global;
+package com.ssafy.enjoytrip.global.enumvalidator;
 
+import com.ssafy.enjoytrip.global.enumvalidator.EnumValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;

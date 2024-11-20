@@ -41,8 +41,5 @@ out/
 /src/main/resources
 application.yml
 
-# test resources 파일 생략
-application-test.yml
-
-# mac 로컬 파일 삭제
+### mac 기본 파일 삭제 ###
 .DS_Store

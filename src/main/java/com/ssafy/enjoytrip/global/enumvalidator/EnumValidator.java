@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global;
+package com.ssafy.enjoytrip.global.enumvalidator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

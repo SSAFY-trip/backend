@@ -11,25 +11,32 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JoinService {
     private final UserMapper userMapper;
-    public boolean joinProcess(JoinDTO joinDTO){
-        String username = joinDTO.getUsername();
-        String password = joinDTO.getPassword();
-        String name = joinDTO.getName();
-        boolean isUserNameExist = userMapper.existsByUsername(username);
-        boolean isNameExist = userMapper.existsByName(name);
-
-        if(isUserNameExist || isNameExist) return false;
-        if (joinDTO.getRole() == null || !Role.isValidRole(joinDTO.getRole().name())) {
+    public boolean joinProcess(JoinDTO joinDTO) {
+        if (isUsernameOrNameDuplicate(joinDTO) || isInvalidRole(joinDTO.getRole())) {
             return false;
         }
+
+        saveLocalUser(joinDTO);
+        return true;
+    }
+
+    private boolean isUsernameOrNameDuplicate(JoinDTO joinDTO) {
+        boolean isUsernameExists = userMapper.existsByUsername(joinDTO.getUsername());
+        boolean isNameExists = userMapper.existsByName(joinDTO.getName());
+        return isUsernameExists || isNameExists;
+    }
+
+    private boolean isInvalidRole(Role role) {
+        return role == null || !Role.isValidRole(role.name());
+    }
+
+    private void saveLocalUser(JoinDTO joinDTO) {
         User user = User.localUserBuilder()
-                .username(username)
-                .password(password)
+                .username(joinDTO.getUsername())
+                .password(joinDTO.getPassword())
                 .role(joinDTO.getRole())
-                .name(name)
+                .name(joinDTO.getName())
                 .build();
         userMapper.save(user);
-
-        return true;
     }
 }
