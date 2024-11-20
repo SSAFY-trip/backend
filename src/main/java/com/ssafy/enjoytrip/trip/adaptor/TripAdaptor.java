@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Adaptor
@@ -37,7 +38,7 @@ public class TripAdaptor {
 
     public void updateTrip(Trip trip) {
         Map<String, LocalDate> eventDateRange = eventMapper.getEventDateRangeOfTripId(trip.getId());
-        if (!eventDateRange.isEmpty() &&
+        if (eventDateRange.values().stream().noneMatch(Objects::isNull) &&
                 (eventDateRange.get("minDate").isBefore(trip.getStartDate())
                         || eventDateRange.get("maxDate").isAfter(trip.getEndDate()))) {
             throw new TripDateRangeConflictException();
