@@ -1,14 +1,15 @@
 package com.ssafy.enjoytrip.global.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ssafy.enjoytrip.global.exception.ErrorCode;
+import java.util.HashMap;
+import java.util.Map;
+
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ssafy.enjoytrip.global.exception.ErrorCode;
 
 @Getter
 @Builder

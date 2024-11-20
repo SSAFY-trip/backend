@@ -1,9 +1,10 @@
 package com.ssafy.enjoytrip.openfeign.exception;
 
-import com.ssafy.enjoytrip.global.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
+import com.ssafy.enjoytrip.global.exception.ErrorCode;
 
 @Getter
 @AllArgsConstructor

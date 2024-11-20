@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.global.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -39,6 +40,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(
             Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         return ErrorResponse.toResponseEntity((HttpStatus) statusCode);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getConstraintViolations().forEach(violation -> {
+                    errors.put(violation.getPropertyPath().toString(), violation.getMessage());
+                });
+
+        return ErrorResponse.toResponseEntity(GlobalErrorCode.VALIDATION_FAILED, errors);
     }
 
     @ExceptionHandler(Exception.class)

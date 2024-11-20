@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.event.adaptor.EventAdaptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.enjoytrip.event.adaptor.EventAdaptor;
 import com.ssafy.enjoytrip.event.dto.*;
 import com.ssafy.enjoytrip.event.domain.Event;
 import com.ssafy.enjoytrip.openfeign.client.KakaoClient;

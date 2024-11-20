@@ -3,10 +3,10 @@ package com.ssafy.enjoytrip.trip.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.trip.adaptor.TripAdaptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.enjoytrip.trip.adaptor.TripAdaptor;
 import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;

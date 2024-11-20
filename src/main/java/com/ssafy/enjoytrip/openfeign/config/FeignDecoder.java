@@ -1,10 +1,11 @@
 package com.ssafy.enjoytrip.openfeign.config;
 
-import com.ssafy.enjoytrip.global.exception.*;
-import com.ssafy.enjoytrip.openfeign.exception.FeignErrorCode;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;
+
+import com.ssafy.enjoytrip.global.exception.*;
+import com.ssafy.enjoytrip.openfeign.exception.FeignErrorCode;
 
 @Component
 public class FeignDecoder implements ErrorDecoder {

@@ -1,10 +1,11 @@
 package com.ssafy.enjoytrip.event.dto;
 
-import com.ssafy.enjoytrip.event.domain.Event;
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import com.ssafy.enjoytrip.event.domain.Event;
 
 @Builder
 @Getter
