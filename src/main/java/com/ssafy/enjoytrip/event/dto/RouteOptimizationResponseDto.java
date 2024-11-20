@@ -15,12 +15,10 @@ public class RouteOptimizationResponseDto {
     private List<Integer> optimizedOrderOfEventIds;
     private List<TMapRouteOptimizationResponseDto.Feature> mapInfo;
 
-    public static RouteOptimizationResponseDto toDto(List<Event> optimizedEvents, TMapRouteOptimizationResponseDto tMapRouteOptimizationResponseDto){
-        RouteOptimizationResponseDto dto = RouteOptimizationResponseDto.builder()
+    public static RouteOptimizationResponseDto of(List<Event> optimizedEvents, TMapRouteOptimizationResponseDto tMapRouteOptimizationResponseDto){
+        return RouteOptimizationResponseDto.builder()
                 .optimizedOrderOfEventIds(optimizedEvents.stream().map(Event::getId).collect(Collectors.toList()))
                 .mapInfo(tMapRouteOptimizationResponseDto.getFeatures())
                 .build();
-
-        return dto;
     }
 }
