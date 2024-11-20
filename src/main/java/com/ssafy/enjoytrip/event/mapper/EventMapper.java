@@ -24,7 +24,7 @@ public interface EventMapper {
                 #{event.category}
             """)
     @Options(useGeneratedKeys = true, keyProperty = "event.id")
-    Event insertEvent(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("event") Event event);
+    int insertEvent(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("event") Event event);
 
     @Select("SELECT  * FROM event WHERE id = #{id}")
     Event getEventById(Integer id);

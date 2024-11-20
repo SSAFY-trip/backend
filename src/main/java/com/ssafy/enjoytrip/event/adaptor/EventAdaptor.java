@@ -24,7 +24,8 @@ public class EventAdaptor {
 
     public void insertEvent(Integer tripId, LocalDate date, Event event) {
         validateTripIdAndDate(tripId, date);
-        Event createdEvent = eventMapper.insertEvent(tripId, date, event);
+        eventMapper.insertEvent(tripId, date, event);
+        Event createdEvent = this.getEventById(event.getId());
         if (createdEvent.getOrder() == 20)
             throw new EventMaxCntException();
     }
