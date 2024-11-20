@@ -2,10 +2,12 @@ package com.ssafy.enjoytrip.event.dto;
 
 import java.util.List;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import com.ssafy.enjoytrip.openfeign.dto.TMapPlaceDetailResponseDto;
 
+@Builder
 @Getter
 public class PlaceDetailResponseDto {
     private String placeId;
@@ -26,25 +28,27 @@ public class PlaceDetailResponseDto {
     private String additionalInfo;
     private List<String> imageUrls;
 
-    public PlaceDetailResponseDto(TMapPlaceDetailResponseDto tMapDto) {
+    public static PlaceDetailResponseDto of(TMapPlaceDetailResponseDto tMapDto){
         TMapPlaceDetailResponseDto.PoiDetailInfo detailInfo = tMapDto.getPoiDetailInfo();
 
-        this.placeId = detailInfo.getId();
-        this.name = detailInfo.getName();
-        this.category = detailInfo.getCategory();
-        this.address = detailInfo.getFullAddress();
-        this.roadAddress = detailInfo.getFullRoadAddress();
-        this.zipCode = detailInfo.getZipCode();
-        this.telephone = detailInfo.getTelephone();
-        this.latitude = detailInfo.getLatitude();
-        this.longitude = detailInfo.getLongitude();
-        this.menus = detailInfo.getMenus();
-        this.canParkFlag = detailInfo.getBooleanCanParkFlag();
-        this.runsTwentyFourSevenFlag = detailInfo.getBooleanRunsTwentyFourSevenFlag();
-        this.runsYearLongFlag = detailInfo.getBooleanRunsYearLongFlag();
-        this.homepageUrl = detailInfo.getHomepageUrl();
-        this.description = detailInfo.getDescription();
-        this.additionalInfo = detailInfo.getAdditionalInfo();
+        return PlaceDetailResponseDto.builder()
+                .placeId(detailInfo.getId())
+                .name(detailInfo.getName())
+                .category(detailInfo.getCategory())
+                .address(detailInfo.getFullAddress())
+                .roadAddress(detailInfo.getFullRoadAddress())
+                .zipCode(detailInfo.getZipCode())
+                .telephone(detailInfo.getTelephone())
+                .latitude(detailInfo.getLatitude())
+                .longitude(detailInfo.getLongitude())
+                .menus(detailInfo.getMenus())
+                .canParkFlag(detailInfo.getBooleanCanParkFlag())
+                .runsTwentyFourSevenFlag(detailInfo.getBooleanRunsTwentyFourSevenFlag())
+                .runsYearLongFlag(detailInfo.getBooleanRunsYearLongFlag())
+                .homepageUrl(detailInfo.getHomepageUrl())
+                .description(detailInfo.getDescription())
+                .additionalInfo(detailInfo.getAdditionalInfo())
+                .build();
     }
 
     public void setImageUrls(List<String> imageUrls) {

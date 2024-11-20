@@ -3,57 +3,47 @@ package com.ssafy.enjoytrip.trip.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.enjoytrip.global.exception.exception.ResourceNotFoundException;
+import com.ssafy.enjoytrip.trip.adaptor.TripAdaptor;
 import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
 import com.ssafy.enjoytrip.trip.domain.Trip;
-import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 
 @Service
+@RequiredArgsConstructor
 public class TripServiceImpl implements TripService {
-    @Autowired
-    private TripMapper tripMapper;
+    private final TripAdaptor tripAdaptor;
 
     @Override
     public void createTrip(TripCreateDto tripDto) {
-        tripMapper.insertTrip(tripDto.toEntity());
+        tripAdaptor.insertTrip(tripDto.toEntity());
     }
 
     @Override
     public TripResponseDto getTripById(Integer id) {
-        Trip trip = tripMapper.getTripById(id);
-        if (trip == null) {
-            throw new ResourceNotFoundException("Trip not found with id = " + id);
-        }
-        return new TripResponseDto(trip);
+        Trip trip = tripAdaptor.getTripById(id);
+        return TripResponseDto.of(trip);
     }
 
     @Override
     public List<TripResponseDto> getAllTrips() {
-        return tripMapper.getAllTrips()
+        return tripAdaptor.getAllTrips()
                 .stream()
-                .map(TripResponseDto::new)
+                .map(trip -> TripResponseDto.of(trip))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void updateTrip(Integer id, TripUpdateDto tripDto) {
         tripDto.setUpdateId(id);
-        int rowsAffected = tripMapper.updateTrip(tripDto.toEntity());
-        if (rowsAffected == 0) {
-            throw new ResourceNotFoundException("Trip not found with id = " + tripDto.getId());
-        }
+        tripAdaptor.updateTrip(tripDto.toEntity());
     }
 
     @Override
     public void deleteTrip(Integer id) {
-        int rowsAffected = tripMapper.deleteTrip(id);
-        if (rowsAffected == 0) {
-            throw new ResourceNotFoundException("Trip not found with id = " + id);
-        }
+        tripAdaptor.deleteTrip(id);
     }
 }

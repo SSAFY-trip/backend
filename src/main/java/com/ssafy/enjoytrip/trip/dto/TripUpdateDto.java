@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import lombok.Builder;
 import lombok.Getter;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,11 +32,6 @@ public class TripUpdateDto {
     private String imgUrl;
 
     private Boolean isPublic;
-
-    @AssertTrue(message = "Start date must be before end date.")
-    public boolean isDateRangeValid() {
-        return startDate != null && endDate != null && startDate.isBefore(endDate);
-    }
 
     public void setUpdateId(Integer id) {
         this.id = id;

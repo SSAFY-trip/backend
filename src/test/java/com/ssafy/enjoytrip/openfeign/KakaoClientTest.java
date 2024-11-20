@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.ssafy.enjoytrip.openfeign.client.KakaoClient;
 import com.ssafy.enjoytrip.openfeign.dto.KakaoImageResponseDto;
 
 @SpringBootTest

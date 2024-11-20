@@ -2,11 +2,13 @@ package com.ssafy.enjoytrip.trip.dto;
 
 import java.time.LocalDate;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import com.ssafy.enjoytrip.trip.domain.Trip;
 
 @Getter
+@Builder
 public class TripResponseDto {
     private Integer id;
     private String name;
@@ -28,13 +30,15 @@ public class TripResponseDto {
                 .build();
     }
 
-    public TripResponseDto(Trip trip) {
-        this.id = trip.getId();
-        this.name = trip.getName();
-        this.startDate = trip.getStartDate();
-        this.endDate = trip.getEndDate();
-        this.tripOverview = trip.getTripOverview();
-        this.imgUrl = trip.getImgUrl();
-        this.isPublic = trip.getIsPublic();
+    public static TripResponseDto of(Trip trip) {
+        return TripResponseDto.builder()
+                .id(trip.getId())
+                .name(trip.getName())
+                .startDate(trip.getStartDate())
+                .endDate(trip.getEndDate())
+                .tripOverview(trip.getTripOverview())
+                .imgUrl(trip.getImgUrl())
+                .isPublic(trip.getIsPublic())
+                .build();
     }
 }

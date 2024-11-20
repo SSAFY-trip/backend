@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.event.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 
@@ -23,10 +24,16 @@ public interface EventMapper {
                 #{event.category}
             """)
     @Options(useGeneratedKeys = true, keyProperty = "event.id")
-    void insertEvent(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("event") Event event);
+    int insertEvent(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("event") Event event);
 
     @Select("SELECT  * FROM event WHERE id = #{id}")
     Event getEventById(Integer id);
+
+    @Select("SELECT * FROM event WHERE id = #{id} AND trip_id = #{tripId}")
+    Event getEventOfTripById(Integer tripId, Integer id);
+
+    @Select("SELECT MIN(date) as minDate, MAX(date) as maxDate from event where trip_id = #{tripId}")
+    Map<String, LocalDate> getEventDateRangeOfTripId(Integer tripId);
 
     @Select("SELECT id FROM event WHERE trip_id = #{tripId} AND `date` = #{date}")
     List<Integer> getEventIdsOfTripIdAndDate(@Param("tripId") Integer tripId, @Param("date") LocalDate date);
@@ -65,8 +72,11 @@ public interface EventMapper {
             """)
     int updateOrderOfEvents(@Param("tripId") Integer tripId, @Param("date") LocalDate date, @Param("events") List<Event> events);
 
+    @Delete("DELETE FROM event WHERE id=#{id}")
+    int deleteEventById(Integer id);
+
     @Delete("DELETE FROM event WHERE trip_id=#{tripId} and id=#{id}")
-    int deleteEvent(Integer tripId, Integer id);
+    int deleteEventOfTripById(Integer tripId, Integer id);
 
     @Delete("DELETE FROM event")
     int deleteAllEvents();
