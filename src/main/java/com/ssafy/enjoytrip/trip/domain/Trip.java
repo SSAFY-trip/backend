@@ -33,9 +33,4 @@ public class Trip {
     private String imgUrl;
 
     private Boolean isPublic;
-
-    @AssertTrue(message = "Start date must be before end date.")
-    public boolean isDateRangeValid() {
-        return startDate != null && endDate != null && startDate.isBefore(endDate);
-    }
 }
