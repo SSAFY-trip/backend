@@ -40,3 +40,6 @@ out/
 # resources 파일 생략
 /src/main/resources
 application.yml
+
+### mac 기본 파일 삭제 ###
+.DS_Store
