@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -38,9 +40,9 @@ public class UserMapperTest {
         userMapper.save(user);
 
         // Then
-        User savedUser = userMapper.findByUsername("testuser");
+        Optional<User> savedUser = userMapper.findByUsername("testuser");
         assertNotNull(savedUser);
-        assertEquals("testuser", savedUser.getUsername());
+        assertEquals("testuser", savedUser.get().getUsername());
     }
 
     @Test
