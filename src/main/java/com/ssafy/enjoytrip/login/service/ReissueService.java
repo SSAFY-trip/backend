@@ -61,8 +61,10 @@ public class ReissueService {
 
         String username = jwtUtil.getUsername(refresh);
         Role role = jwtUtil.getRole(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        Long userId = jwtUtil.getUserId(refresh);
+
+        String newAccess = jwtUtil.createJwt("access", username, role, 600000L,userId);
+        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L,userId);
 
         refreshMapper.deleteByRefresh(refresh);
         utilFunction.addRefreshEntity(username, newRefresh);

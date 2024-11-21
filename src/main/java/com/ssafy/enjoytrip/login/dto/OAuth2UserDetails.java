@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.login.dto;
 
-import com.ssafy.enjoytrip.login.dto.UserDTO;
+import com.ssafy.enjoytrip.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class OAuth2UserDetails implements OAuth2User {
-    private final UserDTO userDTO;
+    private final User user;
     @Override
     public Map<String, Object> getAttributes() {
         return null;
@@ -20,14 +20,15 @@ public class OAuth2UserDetails implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new SimpleGrantedAuthority(userDTO.getRole().name()));
+        collection.add(new SimpleGrantedAuthority(user.getRole().name()));
         return collection;
     }
     @Override
     public String getName() {
-        return userDTO.getName();
+        return user.getName();
     }
     public String getUsername() {
-        return userDTO.getUsername();
+        return user.getUsername();
     }
+    public Long getId() { return user.getId(); }
 }

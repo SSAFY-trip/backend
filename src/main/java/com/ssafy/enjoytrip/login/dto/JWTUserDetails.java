@@ -26,4 +26,7 @@ public class JWTUserDetails implements UserDetails {
     public String getUsername() {
         return user.getUsername();
     }
+    public Long getUserId(){
+        return user.getId();
+    }
 }

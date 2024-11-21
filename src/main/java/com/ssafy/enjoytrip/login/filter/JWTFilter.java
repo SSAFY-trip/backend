@@ -53,6 +53,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // 토큰에서 username 과 role 추출
         String username = jwtUtil.getUsername(accessToken);
         Role role = jwtUtil.getRole(accessToken);
+        Long userId = jwtUtil.getUserId(accessToken);
 
         // 추출한 정보로 userEntity 생성
         User user = User.localUserBuilder()
@@ -70,6 +71,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 세션에 사용자 등록 (임시 저장)
         SecurityContextHolder.getContext().setAuthentication(authToken);
+
+        // userId를 HttpServletRequest에 저장
+        request.setAttribute("userId", userId);
 
         // 다음 필터로 요청, 응답 전달
         filterChain.doFilter(request, response);

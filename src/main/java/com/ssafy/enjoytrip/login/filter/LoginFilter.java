@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.login.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.enjoytrip.login.dto.JWTUserDetails;
 import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import com.ssafy.enjoytrip.login.util.UtilFunction;
@@ -44,15 +45,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         return authenticationManager.authenticate(authToken);
     }
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-        String username = authentication.getName();
+        JWTUserDetails userDetails = (JWTUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Role role = Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority());
+        Long userId = userDetails.getUserId();
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
-        Role role = Role.valueOf(auth.getAuthority());
-
-        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String access = jwtUtil.createJwt("access", username, role, 600000L, userId);
+        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L, userId);
 
         utilFunction.addRefreshEntity(username, refresh);
 

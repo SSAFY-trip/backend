@@ -20,13 +20,13 @@ public class TemporaryJwtValidationService {
 
         String username = jwtUtil.getUsername(temporaryToken);
         Role role = jwtUtil.getRole(temporaryToken);
-
+        Long userId = jwtUtil.getUserId(temporaryToken);
         if (username == null || role == null) {
             throw new IllegalArgumentException("Invalid token");
         }
 
-        String access = jwtUtil.createJwt("access", username, role, 600000L);
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String access = jwtUtil.createJwt("access", username, role, 600000L, userId);
+        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L, userId);
 
         utilFunction.addRefreshEntity(username, refresh);
 

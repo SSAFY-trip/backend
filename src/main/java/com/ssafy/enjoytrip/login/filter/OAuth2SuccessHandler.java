@@ -25,13 +25,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2UserDetails customUserDetails = (OAuth2UserDetails) authentication.getPrincipal();
         String username = customUserDetails.getUsername();
+        Long userId = customUserDetails.getId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         Role role = Role.valueOf(auth.getAuthority());
 
-        String temporaryToken = jwtUtil.createJwt("temporary", username, role, 3000L); // 3초 유효기간
+        String temporaryToken = jwtUtil.createJwt("temporary", username, role, 3000L, userId);
 
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth2/redirect")
                 .queryParam("temporaryToken", temporaryToken)

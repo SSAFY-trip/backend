@@ -6,7 +6,6 @@ import com.ssafy.enjoytrip.login.Response.OAuth2Response;
 import com.ssafy.enjoytrip.login.dto.OAuth2UserDetails;
 import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.user.domain.User;
-import com.ssafy.enjoytrip.login.dto.UserDTO;
 import com.ssafy.enjoytrip.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -45,21 +44,10 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
                     .build();
             userRepository.save(userEntity);
 
-            UserDTO userDTO = UserDTO.builder()
-                    .role(Role.ROLE_USER)
-                    .username(username)
-                    .name(oAuth2Response.getName())
-                    .build();
-
-            return new OAuth2UserDetails(userDTO);
+            return new OAuth2UserDetails(userRepository.findByUsername(username).get());
         }
         else {
-            UserDTO userDTO = UserDTO.builder()
-                    .role(user.get().getRole())
-                    .username(user.get().getUsername())
-                    .name(oAuth2Response.getName())
-                    .build();
-            return new OAuth2UserDetails(userDTO);
+            return new OAuth2UserDetails(user.get());
         }
     }
 }
