@@ -2,6 +2,9 @@ package com.ssafy.enjoytrip.user.mapper;
 
 import com.ssafy.enjoytrip.user.domain.User;
 import org.apache.ibatis.annotations.*;
+
+import java.util.Optional;
+
 @Mapper
 public interface UserMapper {
 
@@ -15,7 +18,7 @@ public interface UserMapper {
             @Result(property = "provider", column = "provider"),
             @Result(property = "role", column = "role")
     })
-    User findByUsername(@Param("username") String username);
+    Optional<User> findByUsername(@Param("username") String username);
 
     @Insert("INSERT INTO user (username, password, email, name, provider, role) VALUES (#{username}, #{password}, #{email}, #{name}, #{provider}, #{role})")
     @Options(useGeneratedKeys = true, keyProperty = "id")

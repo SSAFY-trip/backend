@@ -1,14 +1,6 @@
 package com.ssafy.enjoytrip.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.enjoytrip.event.controller.EventController;
-import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
-import com.ssafy.enjoytrip.login.config.SecurityConfig;
-import com.ssafy.enjoytrip.login.filter.OAuth2SuccessHandler;
-import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
-import com.ssafy.enjoytrip.login.service.OAuth2UserDetailsService;
-import com.ssafy.enjoytrip.login.util.JWTUtil;
-import com.ssafy.enjoytrip.login.util.UtilFunction;
 import com.ssafy.enjoytrip.user.controller.JoinController;
 import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.user.dto.JoinDTO;
@@ -16,10 +8,8 @@ import com.ssafy.enjoytrip.user.service.JoinService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
