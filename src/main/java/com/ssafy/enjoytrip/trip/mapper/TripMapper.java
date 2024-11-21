@@ -29,4 +29,7 @@ public interface TripMapper {
 
     @Update("ALTER TABLE trip AUTO_INCREMENT = 1")
     void resetAutoIncrement();
+
+    @Select("SELECT COUNT(*) > 0 FROM trip WHERE id = #{tripId}")
+    boolean isTripValid(@Param("tripId") Long tripId);
 }
