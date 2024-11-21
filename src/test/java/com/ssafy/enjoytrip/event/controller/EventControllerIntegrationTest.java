@@ -61,11 +61,11 @@ public class EventControllerIntegrationTest {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         trip = Trip.builder()
+                .uid("uid")
                 .name("강릉 여행")
                 .startDate(LocalDate.now())
                 .endDate(LocalDate.now())
                 .tripOverview("A short trip to explore Gangneung's beautiful landscapes.")
-                .imgUrl("https://example.com/trip-img.jpg")
                 .isPublic(true)
                 .build();
 

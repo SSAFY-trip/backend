@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.event.controller.EventController;
-import com.ssafy.enjoytrip.global.exception.exception.GlobalExceptionHandler;
+import com.ssafy.enjoytrip.global.exception.GlobalExceptionHandler;
 import com.ssafy.enjoytrip.login.config.SecurityConfig;
 import com.ssafy.enjoytrip.login.filter.OAuth2SuccessHandler;
 import com.ssafy.enjoytrip.login.mapper.RefreshMapper;

@@ -37,6 +37,7 @@ public class EventMapperTest {
     public void setup() {
         trip = Trip.builder()
                 .id(1)
+                .uid("uid")
                 .name("Test Trip")
                 .startDate(LocalDate.now())
                 .endDate(LocalDate.now().plusDays(7))

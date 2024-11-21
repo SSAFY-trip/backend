@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ssafy.enjoytrip.global.util.S3Util;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,9 @@ class TripServiceTest {
     @Mock
     private TripAdaptor tripAdaptor;
 
+    @Mock
+    private S3Util s3Util;
+
     @InjectMocks
     private TripServiceImpl tripService;
 
@@ -37,7 +41,6 @@ class TripServiceTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
         Trip trip = tripCreateDto.toEntity();
@@ -46,7 +49,7 @@ class TripServiceTest {
         tripService.createTrip(tripCreateDto);
 
         // Then
-        verify(tripAdaptor, times(1)).insertTrip(refEq(trip));
+        verify(tripAdaptor, times(1)).insertTrip(any());
     }
 
     @Test
@@ -55,11 +58,11 @@ class TripServiceTest {
         // Given
         Trip trip = Trip.builder()
                 .id(1)
+                .uid("uid")
                 .name("Paris")
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
         when(tripAdaptor.getTripById(1)).thenReturn(trip);
@@ -79,21 +82,21 @@ class TripServiceTest {
         // Given
         Trip trip1 = Trip.builder()
                 .id(1)
+                .uid("uid")
                 .name("Paris")
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
         Trip trip2 = Trip.builder()
                 .id(2)
+                .uid("uid")
                 .name("Rome")
                 .startDate(LocalDate.of(2023, 2, 1))
                 .endDate(LocalDate.of(2023, 2, 10))
                 .tripOverview("An amazing trip to Rome.")
-                .imgUrl("http://example.com/image2.jpg")
                 .isPublic(true)
                 .build();
 
@@ -118,7 +121,6 @@ class TripServiceTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("An updated trip overview.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(false)
                 .build();
         tripUpdateDto.setUpdateId(1);
@@ -135,6 +137,19 @@ class TripServiceTest {
     @Test
     @DisplayName("Delete Trip - calls deleteById()")
     void deleteTrip_shouldDeleteTrip() {
+        //Given
+        Trip trip = Trip.builder()
+                .id(1)
+                .uid("uid")
+                .name("Paris")
+                .startDate(LocalDate.of(2023, 1, 1))
+                .endDate(LocalDate.of(2023, 1, 10))
+                .tripOverview("A wonderful trip to Paris.")
+                .isPublic(true)
+                .build();
+
+        when(tripAdaptor.getTripById(1)).thenReturn(trip);
+
         // When
         tripService.deleteTrip(1);
 
