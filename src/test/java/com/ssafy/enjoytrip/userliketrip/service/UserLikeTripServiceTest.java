@@ -26,42 +26,20 @@ class UserLikeTripServiceTest {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    @DisplayName("updateLikeTrip - Toggle Like")
+    @DisplayName("updateLikeTrip - adaptor 호출 횟수 확인")
     void testUpdateLikeTrip() {
         // Given
         Long userId = 1L;
         Long tripId = 2L;
 
-        // Mocking
-        when(userLikeTripAdaptor.isLiked(userId, tripId)).thenReturn(false);
-
         // When
         userLikeTripService.updateLikeTrip(userId, tripId);
 
         // Then
-        verify(userLikeTripAdaptor, times(1)).isLiked(userId, tripId);
-        verify(userLikeTripAdaptor, times(1)).toggleLike(userId, tripId, true);
+        verify(userLikeTripAdaptor, times(1)).toggleLike(userId, tripId);
     }
     @Test
-    @DisplayName("updateLikeTrip - 기존 Like가 존재할 때 deleteLike 호출")
-    void testUpdateLikeTripWithExistingLike() {
-        // Given
-        Long userId = 1L;
-        Long tripId = 2L;
-
-        // Mocking: 좋아요 상태가 true라고 가정
-        when(userLikeTripAdaptor.isLiked(userId, tripId)).thenReturn(true);
-
-        // When
-        userLikeTripService.updateLikeTrip(userId, tripId);
-
-        // Then
-        verify(userLikeTripAdaptor, times(1)).isLiked(userId, tripId);
-        verify(userLikeTripAdaptor, times(1)).toggleLike(userId, tripId, false);
-    }
-
-    @Test
-    @DisplayName("getLikedTripsByUser - Return Liked Trips")
+    @DisplayName("getLikedTripsByUser - 사용자가 좋아요한 여행 목록 반환")
     void testGetLikedTripsByUser() {
         // Given
         Long userId = 1L;
@@ -79,10 +57,11 @@ class UserLikeTripServiceTest {
         verify(userLikeTripAdaptor, times(1)).findLikedTripsByUser(userId);
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getName()).isEqualTo("Trip 1");
+        assertThat(result.get(1).getName()).isEqualTo("Trip 2");
     }
 
     @Test
-    @DisplayName("getUsersWhoLikedTrip - Return Users Who Liked Trip")
+    @DisplayName("getUsersWhoLikedTrip - 특정 여행을 좋아요한 사용자 목록 반환")
     void testGetUsersWhoLikedTrip() {
         // Given
         Long tripId = 2L;
@@ -100,5 +79,6 @@ class UserLikeTripServiceTest {
         verify(userLikeTripAdaptor, times(1)).findUsersWhoLikedTrip(tripId);
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getUsername()).isEqualTo("user1");
+        assertThat(result.get(1).getUsername()).isEqualTo("user2");
     }
 }

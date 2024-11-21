@@ -13,8 +13,7 @@ import java.util.List;
 public class UserLikeTripServiceImpl implements UserLikeTripService{
     private final UserLikeTripAdaptor userLikeTripAdaptor;
     public void updateLikeTrip(Long userId, Long tripId) {
-        boolean isLiked = userLikeTripAdaptor.isLiked(userId, tripId);
-        userLikeTripAdaptor.toggleLike(userId, tripId, !isLiked);
+        userLikeTripAdaptor.toggleLike(userId, tripId);
     }
     public List<TripResponseDto> getLikedTripsByUser(Long userId) {
         return userLikeTripAdaptor.findLikedTripsByUser(userId);

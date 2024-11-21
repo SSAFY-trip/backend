@@ -31,7 +31,7 @@ class UserLikeTripAdaptorTest {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    @DisplayName("isLiked - 정상 동작 확인")
+    @DisplayName("toggleLike - like가 true 때 deleteLike 호출")
     void testIsLikedSuccess() {
         // Given
         Long userId = 1L;
@@ -42,44 +42,31 @@ class UserLikeTripAdaptorTest {
         when(userLikeTripMapper.isLiked(userId, tripId)).thenReturn(true);
 
         // When
-        boolean result = userLikeTripAdaptor.isLiked(userId, tripId);
+        userLikeTripAdaptor.toggleLike(userId, tripId);
 
         // Then
         verify(tripMapper, times(1)).isTripValid(tripId);
         verify(userLikeTripMapper, times(1)).isLiked(userId, tripId);
-        assertThat(result).isTrue();
+        verify(userLikeTripMapper, times(1)).deleteLike(userId, tripId);
+        verify(userLikeTripMapper, never()).insertLike(anyLong(), anyLong());
     }
 
     @Test
-    @DisplayName("toggleLike - like가 true일 때 insertLike 호출")
+    @DisplayName("toggleLike - like가 false 때 insertLike 호출")
     void testToggleLikeInsert() {
         // Given
         Long userId = 1L;
         Long tripId = 2L;
-        boolean like = true;
+
+        when(tripMapper.isTripValid(tripId)).thenReturn(true);
+        when(userLikeTripMapper.isLiked(userId,tripId)).thenReturn(false);
 
         // When
-        userLikeTripAdaptor.toggleLike(userId, tripId, like);
+        userLikeTripAdaptor.toggleLike(userId, tripId);
 
         // Then
         verify(userLikeTripMapper, times(1)).insertLike(userId, tripId);
         verify(userLikeTripMapper, never()).deleteLike(anyLong(), anyLong());
-    }
-
-    @Test
-    @DisplayName("toggleLike - like가 false일 때 deleteLike 호출")
-    void testToggleLikeDelete() {
-        // Given
-        Long userId = 1L;
-        Long tripId = 2L;
-        boolean like = false;
-
-        // When
-        userLikeTripAdaptor.toggleLike(userId, tripId, like);
-
-        // Then
-        verify(userLikeTripMapper, times(1)).deleteLike(userId, tripId);
-        verify(userLikeTripMapper, never()).insertLike(anyLong(), anyLong());
     }
     @Test
     @DisplayName("isLiked - TripNotFoundException 호출")
@@ -92,7 +79,7 @@ class UserLikeTripAdaptorTest {
         when(tripMapper.isTripValid(tripId)).thenReturn(false);
 
         // When & Then
-        assertThatThrownBy(() -> userLikeTripAdaptor.isLiked(userId, tripId))
+        assertThatThrownBy(() -> userLikeTripAdaptor.toggleLike(userId, tripId))
                 .isInstanceOf(TripNotFoundException.class);
     }
 

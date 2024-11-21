@@ -15,15 +15,13 @@ import java.util.List;
 public class UserLikeTripAdaptor {
     private final UserLikeTripMapper userLikeTripMapper;
     private final TripMapper tripMapper;
-    public boolean isLiked(Long userId, Long tripId) {
+    public void toggleLike(Long userId, Long tripId) {
         validateTripExistence(tripId);
-        return userLikeTripMapper.isLiked(userId, tripId);
-    }
-    public void toggleLike(Long userId, Long tripId, boolean like) {
-        if (like) {
-            userLikeTripMapper.insertLike(userId, tripId);
-        } else {
+
+        if (userLikeTripMapper.isLiked(userId, tripId)) {
             userLikeTripMapper.deleteLike(userId, tripId);
+        } else {
+            userLikeTripMapper.insertLike(userId, tripId);
         }
     }
     public List<TripResponseDto> findLikedTripsByUser(Long userId) {
