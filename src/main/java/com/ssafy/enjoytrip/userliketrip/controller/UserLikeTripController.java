@@ -1,8 +1,9 @@
-package com.ssafy.enjoytrip.userliketrip;
+package com.ssafy.enjoytrip.userliketrip.controller;
 
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.user.dto.UserResponseDTO;
 import com.ssafy.enjoytrip.user.service.UserService;
+import com.ssafy.enjoytrip.userliketrip.service.UserLikeTripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

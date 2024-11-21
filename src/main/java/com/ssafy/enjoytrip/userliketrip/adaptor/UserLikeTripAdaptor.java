@@ -1,10 +1,11 @@
-package com.ssafy.enjoytrip.userliketrip;
+package com.ssafy.enjoytrip.userliketrip.adaptor;
 
 import com.ssafy.enjoytrip.global.annotation.Adaptor;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.exception.TripNotFoundException;
 import com.ssafy.enjoytrip.trip.mapper.TripMapper;
 import com.ssafy.enjoytrip.user.dto.UserResponseDTO;
+import com.ssafy.enjoytrip.userliketrip.mapper.UserLikeTripMapper;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,11 +13,10 @@ import java.util.List;
 @Adaptor
 @RequiredArgsConstructor
 public class UserLikeTripAdaptor {
-    UserLikeTripMapper userLikeTripMapper;
-    TripMapper tripMapper;
+    private final UserLikeTripMapper userLikeTripMapper;
+    private final TripMapper tripMapper;
     public boolean isLiked(Long userId, Long tripId) {
         validateTripExistence(tripId);
-
         return userLikeTripMapper.isLiked(userId, tripId);
     }
     public void toggleLike(Long userId, Long tripId, boolean like) {
