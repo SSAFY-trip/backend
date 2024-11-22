@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.login.util;
 
+import com.ssafy.enjoytrip.login.exception.AccessTokenInvalidException;
 import com.ssafy.enjoytrip.user.domain.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -63,6 +64,10 @@ public class JWTUtil {
             return true;
         }
     }
+
+    /**
+     * JWT 생성 로직
+     */
     public String createJwt(String category, String username, Role role, Long expiredMs, Long userId) {
         return Jwts.builder()
                 .claim("category", category)
@@ -74,5 +79,4 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
-
 }

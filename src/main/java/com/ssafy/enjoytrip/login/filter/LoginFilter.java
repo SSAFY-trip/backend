@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.login.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.login.dto.JWTUserDetails;
+import com.ssafy.enjoytrip.login.exception.LoginJsonParsingException;
 import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
 import com.ssafy.enjoytrip.login.util.UtilFunction;
@@ -31,14 +32,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = null;
         String password = null;
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
             username = requestBody.get("username");
             password = requestBody.get("password");
         } catch (IOException e) {
-            throw new RuntimeException("JSON 파싱 오류", e);
+            throw new LoginJsonParsingException();
         }
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 

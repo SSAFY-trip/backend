@@ -1,6 +1,8 @@
 package com.ssafy.enjoytrip.login.filter;
 
 import com.ssafy.enjoytrip.login.dto.JWTUserDetails;
+import com.ssafy.enjoytrip.login.exception.AccessTokenExpiredException;
+import com.ssafy.enjoytrip.login.exception.AccessTokenInvalidException;
 import com.ssafy.enjoytrip.user.domain.Role;
 import com.ssafy.enjoytrip.user.domain.User;
 import com.ssafy.enjoytrip.login.util.JWTUtil;
@@ -8,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +26,6 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = request.getHeader("access");
-
         // 토큰이 존재 여부 확인
         if (accessToken == null) {
             filterChain.doFilter(request, response);
@@ -50,32 +52,20 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 토큰에서 username 과 role 추출
         String username = jwtUtil.getUsername(accessToken);
         Role role = jwtUtil.getRole(accessToken);
         Long userId = jwtUtil.getUserId(accessToken);
 
-        // 추출한 정보로 userEntity 생성
         User user = User.localUserBuilder()
                 .username(username)
                 .password("temppassword")
                 .role(role)
                 .build();
 
-
-        // UserDetails 에 userEntity 담기
         JWTUserDetails customUserDetails = new JWTUserDetails(user);
-
-        // 시큐리티 인증 토큰 객체 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-
-        // 세션에 사용자 등록 (임시 저장)
         SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        // userId를 HttpServletRequest에 저장
         request.setAttribute("userId", userId);
-
-        // 다음 필터로 요청, 응답 전달
         filterChain.doFilter(request, response);
     }
 }
