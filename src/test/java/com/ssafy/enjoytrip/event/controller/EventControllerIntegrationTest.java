@@ -61,11 +61,11 @@ public class EventControllerIntegrationTest {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         trip = Trip.builder()
+                .uid("test")
                 .name("강릉 여행")
                 .startDate(LocalDate.now())
-                .endDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(7))
                 .tripOverview("A short trip to explore Gangneung's beautiful landscapes.")
-                .imgUrl("https://example.com/trip-img.jpg")
                 .isPublic(true)
                 .build();
 
@@ -74,6 +74,7 @@ public class EventControllerIntegrationTest {
         event1 = Event.builder()
                 .placeId("4514668")
                 .name("엄지네포장마차 본점")
+                .date(LocalDate.now())
                 .latitude(37.76632825)
                 .longitude(128.90700701)
                 .category("한식")
@@ -81,6 +82,7 @@ public class EventControllerIntegrationTest {
 
         event2 = Event.builder()
                 .placeId("1234613")
+                .date(LocalDate.now())
                 .name("원조강릉교동반점 본점 [중식]")
                 .category("중식")
                 .latitude(37.75838445)
@@ -89,6 +91,7 @@ public class EventControllerIntegrationTest {
 
         event3 = Event.builder()
                 .placeId("2872491")
+                .date(LocalDate.now().plusDays(1))
                 .name("벌집")
                 .category("한식")
                 .latitude(37.75449601)
@@ -97,6 +100,7 @@ public class EventControllerIntegrationTest {
 
         event4 = Event.builder()
                 .placeId("2372901")
+                .date(LocalDate.now().plusDays(1))
                 .name("현대장칼국수")
                 .category("한식")
                 .latitude(37.75746789)
@@ -105,6 +109,7 @@ public class EventControllerIntegrationTest {
 
         event5 = Event.builder()
                 .placeId("2803475")
+                .date(LocalDate.now().plusDays(4))
                 .name("해미가")
                 .category("한식")
                 .latitude(37.77104938)
@@ -124,6 +129,16 @@ public class EventControllerIntegrationTest {
         eventMapper.resetAutoIncrement();
         tripMapper.deleteAllTrips();
         tripMapper.resetAutoIncrement();
+    }
+
+    @Test
+    @DisplayName("Test Get Ordered Events Of Trip Id")
+    void testGetOrderedEventOfTripId() throws Exception {
+        mockMvc.perform(get("/trips/{tripId}/events", trip.getId()))
+                .andExpect(status().isOk())
+                .andDo(result -> {
+                    printResponse(result);
+                });
     }
 
     @Test

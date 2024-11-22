@@ -36,11 +36,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ErrorResponse.toResponseEntity(GlobalErrorCode.VALIDATION_FAILED, errors);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-        return ErrorResponse.toResponseEntity((HttpStatus) statusCode);
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleExceptionInternal(
+//            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+//        return ErrorResponse.toResponseEntity((HttpStatus) statusCode);
+//    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
@@ -52,8 +52,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ErrorResponse.toResponseEntity(GlobalErrorCode.VALIDATION_FAILED, errors);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception e) {
-        return ErrorResponse.toResponseEntity(GlobalErrorCode.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleException(Exception e) {
+//        return ErrorResponse.toResponseEntity(GlobalErrorCode.INTERNAL_SERVER_ERROR);
+//    }
 }

@@ -32,7 +32,6 @@ class TripTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("Overview")
-                .imgUrl("imgUrl")
                 .isPublic(true)
                 .build();
 
@@ -46,7 +45,6 @@ class TripTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("Overview")
-                .imgUrl("imgUrl")
                 .isPublic(true)
                 .build();
 
@@ -60,7 +58,6 @@ class TripTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("Overview")
-                .imgUrl("imgUrl")
                 .isPublic(true)
                 .build();
 
@@ -78,7 +75,6 @@ class TripTest {
                 .startDate(null)
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("Overview")
-                .imgUrl("imgUrl")
                 .isPublic(true)
                 .build();
 

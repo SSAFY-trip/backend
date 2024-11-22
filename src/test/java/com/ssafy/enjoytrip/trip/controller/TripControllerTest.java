@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.trip.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -13,14 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -33,7 +30,9 @@ import com.ssafy.enjoytrip.trip.dto.TripCreateDto;
 import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.trip.dto.TripUpdateDto;
 import com.ssafy.enjoytrip.trip.service.TripService;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
+import static com.ssafy.enjoytrip.TestUtil.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -64,20 +63,22 @@ class TripControllerTest {
     @DisplayName("Test Create Trip - with valid data, call createTrip()")
     void testCreateTrip() throws Exception {
         // Given
+        MockMultipartFile mockImageFile = new MockMultipartFile(
+                "image", "image.jpg", "image/jpeg", "image content".getBytes());
+
         TripCreateDto tripCreateDto = TripCreateDto.builder()
                 .name("Paris")
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
+                .image(mockImageFile)
                 .isPublic(true)
                 .build();
 
+
         // When
-        ResultActions resultActions = mockMvc.perform(post("/trips")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(tripCreateDto)));
+        MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/trips");
+        ResultActions resultActions = mockMvc.perform(createMultiPartRequest(multipartRequest, tripCreateDto).with(csrf()));
 
         // Then
         resultActions.andExpect(status().isCreated());
@@ -92,7 +93,6 @@ class TripControllerTest {
         TripCreateDto invalidTripCreateDto = TripCreateDto.builder()
                 .name(RandomStringUtils.randomAlphanumeric(16))
                 .tripOverview(RandomStringUtils.randomAlphanumeric(101))
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -125,7 +125,6 @@ class TripControllerTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -183,7 +182,6 @@ class TripControllerTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -193,7 +191,6 @@ class TripControllerTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -222,10 +219,11 @@ class TripControllerTest {
         // Given
         TripUpdateDto tripUpdateDto = TripUpdateDto.builder()
                 .name("Paris")
+                .uid("uid")
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 15))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
+                .imgUrl("url")
                 .isPublic(true)
                 .build();
 
@@ -249,7 +247,6 @@ class TripControllerTest {
         TripUpdateDto tripUpdateDto = TripUpdateDto.builder()
                 .name(RandomStringUtils.randomAlphanumeric(16))
                 .tripOverview(RandomStringUtils.randomAlphanumeric(101))
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
         tripUpdateDto.setUpdateId(1);
@@ -284,7 +281,6 @@ class TripControllerTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 15))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -349,21 +345,5 @@ class TripControllerTest {
                         "Expected error code does not match."));
 
         verify(tripService, times(1)).deleteTrip(nonExistingId);
-    }
-
-    /*
-    utils
-     */
-    void printResponse(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
-        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-
-        Object json = objectMapper.readValue(jsonResponse, Object.class); // Deserialize
-        String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json); // Pretty print
-
-        System.out.println(prettyJson);
-    }
-
-    String getCode(MvcResult result) throws UnsupportedEncodingException, JsonProcessingException {
-        return objectMapper.readTree(result.getResponse().getContentAsString()).get("code").asText();
     }
 }

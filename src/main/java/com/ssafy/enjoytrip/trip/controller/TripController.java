@@ -23,7 +23,7 @@ public class TripController {
     private final TripService tripService;
 
     @PostMapping
-    public ResponseEntity<Void> createTrip(@RequestBody @Valid TripCreateDto tripDto) {
+    public ResponseEntity<Void> createTrip(@ModelAttribute @Valid TripCreateDto tripDto) {
         tripService.createTrip(tripDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

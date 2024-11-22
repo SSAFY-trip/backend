@@ -15,6 +15,9 @@ import jakarta.validation.constraints.Size;
 public class Trip {
     private Integer id;
 
+    @NotNull
+    private String uid;
+
     @NotBlank
     @Size(max = 15)
     private String name;
@@ -28,7 +31,6 @@ public class Trip {
     @Size(max = 100)
     private String tripOverview;
 
-    @Size(max = 50)
     private String imgUrl;
 
     private Boolean isPublic;

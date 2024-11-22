@@ -7,6 +7,7 @@ import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.trip.domain.Trip;
 
@@ -14,6 +15,8 @@ import com.ssafy.enjoytrip.trip.domain.Trip;
 @Getter
 public class TripUpdateDto {
     private Integer id;
+
+    private String uid;
 
     @NotBlank(message = "Name is required")
     @Size(max = 15, message = "Name must be at most 15 characters")
@@ -28,10 +31,11 @@ public class TripUpdateDto {
     @Size(max = 100, message = "Trip overview must be at most 100 characters")
     private String tripOverview;
 
-    @Size(max = 50, message = "Image URL must be at most 50 characters")
+    private Boolean isPublic;
+
     private String imgUrl;
 
-    private Boolean isPublic;
+    private MultipartFile image;
 
     public void setUpdateId(Integer id) {
         this.id = id;
@@ -40,6 +44,7 @@ public class TripUpdateDto {
     public Trip toEntity() {
         return Trip.builder()
                 .id(id)
+                .uid(uid)
                 .name(name)
                 .startDate(startDate)
                 .endDate(endDate)

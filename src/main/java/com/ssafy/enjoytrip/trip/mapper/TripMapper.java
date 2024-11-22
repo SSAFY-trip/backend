@@ -8,7 +8,7 @@ import com.ssafy.enjoytrip.trip.domain.Trip;
 
 @Mapper
 public interface TripMapper {
-    @Insert("INSERT INTO trip(name, start_date, end_date, trip_overview, img_url, is_public) VALUES(#{name}, #{startDate}, #{endDate}, #{tripOverview}, #{imgUrl}, #{isPublic})")
+    @Insert("INSERT INTO trip(uid, name, start_date, end_date, trip_overview, img_url, is_public) VALUES(#{uid}, #{name}, #{startDate}, #{endDate}, #{tripOverview}, #{imgUrl}, #{isPublic})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertTrip(Trip trip);
 
