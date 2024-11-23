@@ -23,7 +23,7 @@ public class ReissueService {
     private final JWTUtil jwtUtil;
     private final UtilFunction utilFunction;
     private final RefreshMapper refreshMapper;
-    public void reissueAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void reissueAccessToken(HttpServletRequest request, HttpServletResponse response){
         String refresh = null;
         Cookie[] cookies = request.getCookies();
 
