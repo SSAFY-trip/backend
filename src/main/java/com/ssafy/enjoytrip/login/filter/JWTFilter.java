@@ -25,6 +25,12 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        if ("/reissue".equals(requestURI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String accessToken = request.getHeader("access");
         // 토큰이 존재 여부 확인
         if (accessToken == null) {
@@ -48,7 +54,6 @@ public class JWTFilter extends OncePerRequestFilter {
             writer.print("invalid access token");
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
             return;
         }
 
