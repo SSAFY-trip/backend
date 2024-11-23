@@ -26,11 +26,11 @@ class TripMapperTest {
     @BeforeEach
     void setUp() {
         trip = Trip.builder()
+                .uid("uid")
                 .name("Paris")
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
     }
@@ -89,7 +89,6 @@ class TripMapperTest {
                 .startDate(trip.getStartDate())
                 .endDate(trip.getEndDate())
                 .tripOverview(trip.getTripOverview())
-                .imgUrl(trip.getImgUrl())
                 .isPublic(false)
                 .build();
 

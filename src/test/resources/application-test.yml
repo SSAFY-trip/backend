@@ -48,3 +48,9 @@ feign:
     api-key:
       kakao: 2dc26b6f1c48e13cc7a3f44a2833dd67
       tMap: SWPJtDr6YF8BLa8jRgW2j8v4vIysoLEVa7Hm1bHV
+aws:
+  s3:
+    region: ap-northeast-2
+    bucket-name: ssafy-enjoytrip
+    access-key: AKIAR4LLGHDBQI56224S
+    secret-key: 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

@@ -44,7 +44,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
     }
@@ -68,7 +67,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 15))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -112,7 +110,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("A wonderful trip to Paris.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(true)
                 .build();
 
@@ -122,7 +119,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 2, 1))
                 .endDate(LocalDate.of(2023, 2, 10))
                 .tripOverview("An amazing trip to Rome.")
-                .imgUrl("http://example.com/image2.jpg")
                 .isPublic(true)
                 .build();
 
@@ -148,7 +144,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("An updated trip overview.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(false)
                 .build();
 
@@ -176,7 +171,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 1))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("An updated trip overview.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(false)
                 .build();
 
@@ -201,7 +195,6 @@ class TripAdaptorTest {
                 .startDate(LocalDate.of(2023, 1, 5))
                 .endDate(LocalDate.of(2023, 1, 10))
                 .tripOverview("An updated trip overview.")
-                .imgUrl("http://example.com/image.jpg")
                 .isPublic(false)
                 .build();
 
