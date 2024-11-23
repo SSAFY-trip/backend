@@ -41,8 +41,8 @@ public class EventController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Map<LocalDate, List<EventResponseDto>>> getOrderedEventsByTripId(@PathVariable Integer tripId) {
-        Map<LocalDate, List<EventResponseDto>> events = eventService.getOrderedEventsByTripId(tripId);
+    public ResponseEntity<Map<String, List<EventResponseDto>>> getOrderedEventsByTripId(@PathVariable Integer tripId) {
+        Map<String, List<EventResponseDto>> events = eventService.getOrderedEventsByTripId(tripId);
         return ResponseEntity.ok(events);
     }
 

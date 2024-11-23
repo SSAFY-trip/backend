@@ -44,7 +44,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Map<LocalDate, List<EventResponseDto>> getOrderedEventsByTripId(Integer tripId) {
+    public TreeMap<String, List<EventResponseDto>> getOrderedEventsByTripId(Integer tripId) {
         List<Event> events = eventAdaptor.getOrderedEventsByTripId(tripId);
         return events.stream()
                 .map(EventResponseDto::of)

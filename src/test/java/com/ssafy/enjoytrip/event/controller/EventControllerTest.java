@@ -126,20 +126,20 @@ public class EventControllerTest {
         Event event2 = Event.builder().name("Event 2").order(2).date(LocalDate.now()).build();
         Event event3 = Event.builder().name("Event 2").order(1).date(LocalDate.now().plusDays(1)).build();
 
-        Map<LocalDate, List<EventResponseDto>> events = new TreeMap<>();
-        events.put(LocalDate.now(),
+        Map<String, List<EventResponseDto>> events = new TreeMap<>();
+        events.put(LocalDate.now().toString(),
                 Arrays.asList(
                         EventResponseDto.of(event1),
                         EventResponseDto.of(event2)
                 )
         );
-        events.put(LocalDate.now().plusDays(1),
+        events.put(LocalDate.now().plusDays(1).toString(),
                 Arrays.asList(
                         EventResponseDto.of(event3)
                 )
         );
 
-        when(eventService.getOrderedEventsByTripId(tripId)).thenReturn(events);
+        when(eventService.getOrderedEventsByTripId(tripId)).thenReturn((TreeMap<String, List<EventResponseDto>>) events);
 
         // When
         ResultActions resultActions = mockMvc.perform(get("/trips/{tripId}/events", tripId));

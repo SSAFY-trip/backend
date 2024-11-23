@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.event.dto;
 
-import java.time.LocalDate;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,7 +12,7 @@ public class EventResponseDto {
 
     private String name;
 
-    private LocalDate date;
+    private String date;
 
     private Integer order;
 
@@ -30,7 +28,7 @@ public class EventResponseDto {
         return EventResponseDto.builder()
                 .id(event.getId())
                 .name(event.getName())
-                .date(event.getDate())
+                .date(event.getDate().toString())
                 .order(event.getOrder())
                 .memo(event.getMemo())
                 .latitude(event.getLatitude())

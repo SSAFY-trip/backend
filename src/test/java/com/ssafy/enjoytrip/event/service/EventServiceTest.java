@@ -83,7 +83,7 @@ public class EventServiceTest {
         int tripId = 1;
 
         // When
-        Map<LocalDate, List<EventResponseDto>> events = eventService.getOrderedEventsByTripId(tripId);
+        Map<String, List<EventResponseDto>> events = eventService.getOrderedEventsByTripId(tripId);
 
         // Then
         verify(eventAdaptor, times(1)).getOrderedEventsByTripId(eq(tripId));
