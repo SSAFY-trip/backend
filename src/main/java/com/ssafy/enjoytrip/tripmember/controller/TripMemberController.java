@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.tripmember.controller;
 
-import com.ssafy.enjoytrip.trip.domain.Trip;
+import com.ssafy.enjoytrip.trip.dto.TripResponseDto;
 import com.ssafy.enjoytrip.tripmember.service.TripMemberService;
 import com.ssafy.enjoytrip.user.domain.User;
 import com.ssafy.enjoytrip.user.service.UserService;
@@ -30,9 +30,9 @@ public class TripMemberController {
      * 사용자가 참가했던 Trip 반환
      */
     @GetMapping("/trips")
-    public ResponseEntity<List<Trip>> getTripsByUserId() {
+    public ResponseEntity<List<TripResponseDto>> getTripsByUserId() {
         Long userId = userService.getAuthenticatedUser().getId();
-        List<Trip> trips = tripMemberService.getTripsByUserId(userId);
+        List<TripResponseDto> trips = tripMemberService.getTripsByUserId(userId);
         return ResponseEntity.ok(trips);
     }
 
