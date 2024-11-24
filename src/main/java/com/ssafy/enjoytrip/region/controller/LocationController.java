@@ -1,7 +1,8 @@
-package com.ssafy.enjoytrip.region;
+package com.ssafy.enjoytrip.region.controller;
 
 import com.ssafy.enjoytrip.region.domain.Gugun;
 import com.ssafy.enjoytrip.region.domain.Sido;
+import com.ssafy.enjoytrip.region.dto.GugunResponseDto;
 import com.ssafy.enjoytrip.region.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class LocationController {
     }
 
     @GetMapping("/guguns/{sidoCode}")
-    public ResponseEntity<List<Gugun>> getGugunsBySido(@PathVariable Integer sidoCode) {
+    public ResponseEntity<List<GugunResponseDto>> getGugunsBySido(@PathVariable Integer sidoCode) {
         return ResponseEntity.ok(locationService.getGugunsBySido(sidoCode));
     }
 
