@@ -2,6 +2,8 @@ package com.ssafy.enjoytrip.event.service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class EventServiceImpl implements EventService {
     private final EventAdaptor eventAdaptor;
     private final TMapClient tMapClient;
     private final KakaoClient kakaoClient;
+    private final ExecutorService virtualThreadExecutor;
 
     @Override
     public void createEvent(Integer tripId, EventCreateDto eventDto) {
@@ -54,17 +57,23 @@ public class EventServiceImpl implements EventService {
     @Override
     public Map<String, PlaceDetailResponseDto> getPlaceDetailsOfAllEvents(Integer tripId) {
         List<String> placeIds = eventAdaptor.getPlaceIdsOfTripId(tripId);
-        Map<String, PlaceDetailResponseDto> eventDetails = new HashMap<>();
-        for (String placeId : placeIds) {
-            eventDetails.put(placeId, fetchPlaceDetail(placeId));
-        }
-        return eventDetails;
+        placeIds = new ArrayList<>(new HashSet<>(placeIds)); // Remove duplicates
+
+        Map<String, CompletableFuture<PlaceDetailResponseDto>> eventDetails = placeIds.stream()
+                .collect(Collectors.toMap(
+                        placeId -> placeId,
+                        placeId -> CompletableFuture.supplyAsync(() -> fetchPlaceDetail(placeId), virtualThreadExecutor)
+                ));
+
+        return eventDetails.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().join()
+                ));
     }
 
     @Override
     public List<PlaceDetailResponseDto> getPlaceDetailsOfSearch(EventUpdateOrderDto.SearchRequestDto requestDto) {
-        List<PlaceDetailResponseDto> places = new ArrayList<>();
-
         List<String> placeIds = tMapClient.getPlaceSearch(
                 requestDto.getQuery(),
                 requestDto.getAreaLLCode(),
@@ -75,12 +84,12 @@ public class EventServiceImpl implements EventService {
                 requestDto.getPage()
         ).toPlaceIdList();
 
-        for (String placeId : placeIds) {
-            places.add(fetchPlaceDetail(placeId));
-        }
+        List<CompletableFuture<PlaceDetailResponseDto>> places = placeIds.stream()
+                .map(placeId -> CompletableFuture.supplyAsync(() -> fetchPlaceDetail(placeId), virtualThreadExecutor))
+                .collect(Collectors.toList());
 
-        return placeIds.stream()
-                .map(this::fetchPlaceDetail)
+        return places.stream()
+                .map(CompletableFuture::join)
                 .collect(Collectors.toList());
     }
 
