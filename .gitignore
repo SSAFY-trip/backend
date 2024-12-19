@@ -25,7 +25,6 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/src/main/resources/application.properties
 
 ### NetBeans ###
 /nbproject/private/
@@ -36,13 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# resources 파일 생략
-/src/main/resources
-application.yml
-
-# test-application 삭제
-application-test.yml
-
-### mac 기본 파일 삭제 ###
-.DS_Store
