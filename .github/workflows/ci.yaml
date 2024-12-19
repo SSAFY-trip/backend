@@ -43,18 +43,9 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - name: Notify Discord of success
-      if: success()
-      run: |
-        curl -H "Content-Type: application/json" \
-        -X POST \
-        -d '{"content": "✅ Test job succeeded!"}' \
-        ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-    - name: Notify Discord of failure
-      if: failure()
-      run: |
-        curl -H "Content-Type: application/json" \
-        -X POST \
-        -d '{"content": "❌ Test job failed!"}' \
-        ${{ secrets.DISCORD_WEBHOOK_URL }}
+    run: |
+      if [[ ${{ needs.build_test.status }} == 'success' ]]; then
+        curl -X POST -H "Content-Type: application/json" -d '{"content": "Test job passed!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
+      else
+        curl -X POST -H "Content-Type: application/json" -d '{"content": "Test job failed!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
+      fi
