@@ -19,12 +19,14 @@ jobs:
           distribution: 'temurin' # or 'zulu'
           java-version: '21'
 
+      - name: Make Gradle executable
+        run: chmod +x gradlew
+
       - name: Run Build
         run: ./gradlew build
 
 #      - name: Cache Build Artifacts
-      - name: Make Gradle executable
-        run: chmod +x gradlew
+
       - name: Run Tests
         run: ./gradlew test
 
