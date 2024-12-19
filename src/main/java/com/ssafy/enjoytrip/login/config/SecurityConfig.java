@@ -1,0 +1,93 @@
+package com.ssafy.enjoytrip.login.config;
+
+import com.ssafy.enjoytrip.login.filter.CustomLogoutFilter;
+import com.ssafy.enjoytrip.login.filter.JWTFilter;
+import com.ssafy.enjoytrip.login.filter.LoginFilter;
+import com.ssafy.enjoytrip.login.filter.OAuth2SuccessHandler;
+import com.ssafy.enjoytrip.login.mapper.RefreshMapper;
+import com.ssafy.enjoytrip.login.service.OAuth2UserDetailsService;
+import com.ssafy.enjoytrip.login.util.JWTUtil;
+import com.ssafy.enjoytrip.login.util.UtilFunction;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final OAuth2UserDetailsService OAuth2UserDetailsService;
+    private final OAuth2SuccessHandler customSuccessHandler;
+    private final JWTUtil jwtUtil;
+    private final RefreshMapper refreshRepository;
+    private final UtilFunction utilFunction;
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("http://127.0.0.1:5173");
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setMaxAge(3600L);
+        configuration.addExposedHeader("Set-Cookie");
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("access");
+        return request -> configuration;
+    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors((corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource())));
+        http
+                .csrf((auth) -> auth.disable());
+        http
+                .formLogin((auth) -> auth.disable());
+        http
+                .httpBasic((auth) -> auth.disable());
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(OAuth2UserDetailsService))
+                        .successHandler(customSuccessHandler)
+                );
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/", "/join","/reissue","/auth/verify-temporary").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .anyRequest().authenticated());
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,utilFunction), UsernamePasswordAuthenticationFilter.class);
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
+    }
+}
