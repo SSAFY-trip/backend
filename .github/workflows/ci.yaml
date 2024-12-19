@@ -49,12 +49,12 @@ jobs:
 
   notify_discord:
     needs: build_test
-    if: always()
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Notification
         run: |
-          if [[ ${{ job.status }} == 'success' ]]; then
+          if [[ ${{ needs.build_test.status }} == 'success' ]]; then
             curl -X POST -H "Content-Type: application/json" -d '{"content": ":white_check_mark: CI Successful!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
           else
             curl -X POST -H "Content-Type: application/json" -d '{"content": ":x: CI Failed."}' ${{ secrets.DISCORD_WEBHOOK_URL }}
