@@ -59,4 +59,3 @@ jobs:
           else
             curl -X POST -H "Content-Type: application/json" -d '{"content": ":x: CI Failed."}' ${{ secrets.DISCORD_WEBHOOK_URL }}
           fi
-        shell: bash
