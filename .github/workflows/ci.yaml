@@ -36,8 +36,6 @@ jobs:
       - name: Run Build
         run: ./gradlew build
 
-#      - name: Cache Build Artifacts
-
       - name: Run Tests
         run: ./gradlew test
 
@@ -56,8 +54,8 @@ jobs:
     steps:
       - name: Send Discord Notification
         run: |
-          if [[ ${{ needs.build_test.status }} == 'success' ]]; then
-            curl -X POST -H "Content-Type: application/json" -d '{"content": "Test job passed!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
+          if [[ ${{ job.status }} == 'success' ]]; then
+            curl -X POST -H "Content-Type: application/json" -d '{"content": ":white_check_mark: CI Successful!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
           else
-            curl -X POST -H "Content-Type: application/json" -d '{"content": "Test job failed!"}' ${{ secrets.DISCORD_WEBHOOK_URL }}
+            curl -X POST -H "Content-Type: application/json" -d '{"content": ":x: CI Failed."}' ${{ secrets.DISCORD_WEBHOOK_URL }}
           fi
