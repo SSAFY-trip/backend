@@ -1,0 +1,57 @@
+name: CI Workflow # CI Workflow 이름
+run-name: Build Instance # Workflow 실행시 표기되는 이름
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # or 'zulu'
+          java-version: '21'
+
+      - name: Run Build
+        run: ./gradlew build
+
+#      - name: Cache Build Artifacts
+      - name: Make Gradle executable
+        run: chmod +x gradlew
+      - name: Run Tests
+        run: ./gradlew test
+
+#  notify_notion:
+#    needs: build_test
+#    if: always()
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Notify via Notion
+#        run: echo "Notion notification after job completion"
+
+  notify_discord:
+    needs: build_test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify Discord of success
+      if: success()
+      run: |
+        curl -H "Content-Type: application/json" \
+        -X POST \
+        -d '{"content": "✅ Test job succeeded!"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    - name: Notify Discord of failure
+      if: failure()
+      run: |
+        curl -H "Content-Type: application/json" \
+        -X POST \
+        -d '{"content": "❌ Test job failed!"}' \
+        ${{ secrets.DISCORD_WEBHOOK_URL }}
